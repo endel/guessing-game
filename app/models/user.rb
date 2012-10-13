@@ -7,18 +7,23 @@ class User < ActiveRecord::Base
 
   validates :name, :email, :presence => true
 
-  def buy(special, qtt)
-    # if the user has sufficient coins to buy, let`s sell
-    if self.coins >= (special.price * qtt.to_i)
+  def buy(helper, qtt)
+    # Implement a nested transaction here
+    
+      # if the user has sufficient coins to buy, let`s sell
+      if self.coins >= (helper.price * qtt.to_i)
+      
+        if self.user_helpers.where(:helper_id => helper.id).size == 0
+          self.user_helpers.create(:helper_id => helper.id, :qtt => qtt)
+        else
+          user_helper = self.user_helpers.where(:helper_id => helper.id).first
+          user_helper.update_attributes(:qtt => (user_helper.qtt.to_i + qtt.to_i))
+        end
+      
+        self.coins = self.coins - (helper.price * qtt.to_i)
+        self.save
+      end
 
-      self.user_specials.where(:special => special).size == 0 ?
-      self.user_specials.create(:special => special, :qtt => qtt) :
-      self.user_specials.where(:special => special).first.update_attributes(:qtt => qtt)
-
-      true
-    else
-      false
-    end
   end
   def as_json(*args)
     puts self.specials.inspect

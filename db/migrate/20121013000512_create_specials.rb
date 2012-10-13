@@ -2,7 +2,7 @@ class CreateSpecials < ActiveRecord::Migration
   def change
     create_table :specials do |t|
       t.string :name
-      t.float :price
+      t.integer :price
       t.string :identifier
 
       t.timestamps

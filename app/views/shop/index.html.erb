@@ -4,7 +4,6 @@
     	errorPlacement: function(error, element) { return false; },
 
     	submitHandler: function() {
-        console.log("REQUEST")
     		$('span#loading').show();
 
         $.ajax({
@@ -15,6 +14,8 @@
             data: $(".buy_helper").serialize(),
             success: function (data, success) {
                 alert( data.message );
+                $(".buy_helper")[0].reset();
+                $("#total").text("0");
             }
         });
   		
@@ -37,6 +38,7 @@
     
   });
 <% end %>
+<div id="helpers">
 <div id="total">
   0
 </div>
@@ -45,11 +47,9 @@
   <div class="helper-info" id="<%= helper.id %>">
     <%= helper.name %>
     <span class="price"><%= helper.price %></span>
-    <%#= f.simple_fields_for "#{helper.id}" do |h| %>
-    <%#= h.input :id, :as => :hidden, :input_html => { :value => helper.id } %>
     <%= f.input "#{helper.id}", :required => false, :label => false, :input_html => { :class => "update_total" } %>
-    <%# end %>
   </div>
   <% end %>
   <%= f.submit "Buy" %>  
 <% end %>
+</div>

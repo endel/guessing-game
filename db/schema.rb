@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013000514) do
+ActiveRecord::Schema.define(:version => 20121013165956) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.boolean  "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "matters", :force => true do |t|
+    t.string   "name"
+    t.text     "categories"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -54,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
     t.float    "score"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "matter_id"
   end
 
   add_index "rankings", ["user_id"], :name => "index_rankings_on_user_id"
@@ -68,8 +76,7 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
 
   create_table "user_specials", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "special_id"
-    t.string   "name"
+    t.integer  "helper_id"
     t.integer  "qtt"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -87,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.float    "coins",      :default => 0.0
+    t.string   "country"
   end
 
 end
