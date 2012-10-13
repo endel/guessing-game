@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013000514) do
+ActiveRecord::Schema.define(:version => 20121013165956) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -32,6 +32,13 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
     t.string   "name"
     t.float    "price"
     t.string   "identifier"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "matters", :force => true do |t|
+    t.string   "name"
+    t.text     "categories"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -62,6 +69,7 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
     t.float    "score"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "matter_id"
   end
 
   add_index "rankings", ["user_id"], :name => "index_rankings_on_user_id"
@@ -69,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
   create_table "user_helpers", :force => true do |t|
     t.integer  "user_id"
     t.integer  "helper_id"
-    t.string   "name"
     t.integer  "qtt"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -87,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.float    "coins",      :default => 0.0
+    t.string   "country"
   end
 
 end
