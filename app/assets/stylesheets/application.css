@@ -169,6 +169,7 @@ table {
 
 .game-center .mask {
     position: absolute;
+    left: 0;
     top: -95px;
     z-index: 3;
 }

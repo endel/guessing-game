@@ -24,11 +24,10 @@ class GameController < ApplicationController
     # Time is up! No scoring and get another question.
     if params['timeout']
     end
-    
     all_categories = Matter.where("id = ?", params[:matters]).collect {|x| x.categories.split(",") }
     
-    @category = Category.where(:id => all_categories).order("RANDOM()").first
-    @options = @category.pictures.order("RANDOM()").limit(6).to_a
+    @category = Category.where(:id => all_categories).order(db_rand_func).first
+    @options = @category.pictures.order(db_rand_func).limit(6).to_a
     @answer = @options.first
     session['answer'] = @answer.id
 
@@ -52,4 +51,9 @@ class GameController < ApplicationController
 
     redirect_to :action => :ask
   end
+
+  protected
+    def db_rand_func
+      (Rails.env.production?) ? 'RAND()' : 'RANDOM()'
+    end
 end

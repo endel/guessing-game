@@ -8,6 +8,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+Authorization.destroy_all
 User.destroy_all
 User.create([
   {:email => "endel.dreyer@gmail.com", :name => "Endel Dreyer", :score => 0, :nickname => 'endel', :image => 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/157150_1543869820_876143468_n.jpg'},

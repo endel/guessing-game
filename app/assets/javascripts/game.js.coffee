@@ -121,37 +121,40 @@ class Game.Specials
 
   try_consume: (klass) ->
     special = new klass()
-    console.log(@game.user.special[special.name])
     if @game.user.special[special.name] > 0
       @game.user.special[special.name] -= 1
       @consumed.push special.use(@game)
 
 #
+# Common Special Class
+#
+class Game.Specials.Base
+  constructor: ->
+    @element = $("#" + this.name)
+
+#
 # Game.Specials.Cut
 #
-class Game.Specials.Cut
+class Game.Specials.Cut extends Game.Specials.Base
   name: "cut"
   use: (game) ->
-    # Get list of wrong answers
-    wrong_answers = game.options.list.filter (option) ->
-      option.id != game.options.answer.id
-
-    console.log(wrong_answers)
+    # Get list of wrong answers that isn't disabled
+    avaible_wrong_answers = []
+    $(game.options_sel + " [data-id!='"+game.options.answer.id+"']:not(.disabled)").map (i) ->
+      avaible_wrong_answers.push($(this).data('id'))
 
     # Shuffle wrong answers list
-    wrong_answers.shuffle()
+    avaible_wrong_answers.shuffle()
 
-    console.log(wrong_answers)
-
-    $(game.options_sel + " [data-id="+wrong_answers.shift().id+"]").addClass('disabled')
-    $(game.options_sel + " [data-id="+wrong_answers.shift().id+"]").addClass('disabled')
+    $(game.options_sel + " [data-id="+avaible_wrong_answers.shift()+"]").addClass('disabled')
+    $(game.options_sel + " [data-id="+avaible_wrong_answers.shift()+"]").addClass('disabled')
 
     this.name
 
 #
 # Game.Specials.ExtraTime
 #
-class Game.Specials.ExtraTime
+class Game.Specials.ExtraTime extends Game.Specials.Base
   name: "extra_time"
   use: (game) ->
     this.name
@@ -159,7 +162,7 @@ class Game.Specials.ExtraTime
 #
 # Game.Specials.Pass
 #
-class Game.Specials.Pass
+class Game.Specials.Pass extends Game.Specials.Base
   name: "pass"
   use: (game) ->
     this.name
