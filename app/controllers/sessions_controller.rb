@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
     end
 
-    redirect_to stories_path
+    redirect_to game_path
   end
 
   def failure
