@@ -2,15 +2,15 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :score, :nickname, :image, :coins
   has_many :authorizations
 
-  has_many :user_helpers
-  has_many :helpers, :through => :user_helpers
+  has_many :user_specials
+  has_many :specials, :through => :user_specials
 
   validates :name, :email, :presence => true
 
-  def buy(helper, qtt)
+  def buy(special, qtt)
     # if the user has sufficient coins to buy, let`s sell
-    if self.coins >= (helper.price * qtt.to_i)
-      self.user_helpers.create(:helper => helper, :qtt => qtt)
+    if self.coins >= (special.price * qtt.to_i)
+      self.user_specials.create(:special => special, :qtt => qtt)
       true
     else
       false
@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
   end
 
   def as_json(*args)
-    puts self.helpers.inspect
+    puts self.specials.inspect
     self.attributes.merge({
-      :helpers => Hash[self.user_helpers.collect {|uh| [uh.helper.identifier, uh.qtt] }]
+      :specials => Hash[self.user_specials.collect {|uh| [uh.special.identifier, uh.qtt] }]
     })
   end
 

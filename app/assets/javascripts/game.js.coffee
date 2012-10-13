@@ -22,9 +22,9 @@ class window.Game
       game: this,
       container: data.countdown_container
     })
-    @helpers = new Game.Helpers({
+    @specials = new Game.Specials({
       game: this,
-      container: "#helpers"
+      container: "#specials"
     })
 
     # Bind onclick
@@ -36,6 +36,7 @@ class window.Game
         id: $(this).data('id'),
         target: this
       })
+      false
 
   # Request another question
   ask: ->
@@ -84,7 +85,7 @@ class window.Game
 class Game.User
   constructor: (data) ->
     @data = data
-    @helper = data.helpers
+    @special = data.specials
 
 #
 # Game.Options
@@ -98,65 +99,73 @@ class Game.Options
     @answer.id == id
 
 #
-# Game.Helpers class
+# Game.Specials class
 #
-class Game.Helpers
+class Game.Specials
   constructor: (data) ->
     @game = data.game
     @consumed = []
 
     that = this
     $(data.container).on 'click', '#cut', ->
-      if that.game.user.helper['cut'] > 0
-        that.game.user.helper['cut'] -= 1
-        that.consume(Game.Helpers.Cut)
+      that.try_consume(Game.Specials.Cut)
+      false
 
     $(data.container).on 'click', '#extra_time', ->
-      if that.game.user.helper['extra_time'] > 0
-        that.game.user.helper['extra_time'] -= 1
-        that.consume(Game.Helpers.ExtraTime)
+      that.try_consume(Game.Specials.ExtraTime)
+      false
 
     $(data.container).on 'click', '#pass', ->
-      if that.game.user.helper['pass'] > 0
-        that.game.user.helper['pass'] -= 1
-        that.consume(Game.Helpers.Pass)
+      that.try_consume(Game.Specials.Pass)
+      false
 
-  consume: (klass) ->
-    helper = new klass()
-    @consumed.push helper.use(@game)
+  try_consume: (klass) ->
+    special = new klass()
+    console.log(@game.user.special[special.name])
+    if @game.user.special[special.name] > 0
+      @game.user.special[special.name] -= 1
+      @consumed.push special.use(@game)
 
 #
-# Game.Helpers.Cut
+# Game.Specials.Cut
 #
-class Game.Helpers.Cut
+class Game.Specials.Cut
   name: "cut"
   use: (game) ->
-    # Get list of ids
-    game.options.list.filter (option) ->
-      console.log(option)
+    # Get list of wrong answers
+    wrong_answers = game.options.list.filter (option) ->
+      option.id != game.options.answer.id
 
-    $(game.options_sel + "[data-id!="+game.options.answer.id+"]")
+    console.log(wrong_answers)
+
+    # Shuffle wrong answers list
+    wrong_answers.shuffle()
+
+    console.log(wrong_answers)
+
+    $(game.options_sel + " [data-id="+wrong_answers.shift().id+"]").addClass('disabled')
+    $(game.options_sel + " [data-id="+wrong_answers.shift().id+"]").addClass('disabled')
 
     this.name
 
 #
-# Game.Helpers.ExtraTime
+# Game.Specials.ExtraTime
 #
-class Game.Helpers.ExtraTime
+class Game.Specials.ExtraTime
   name: "extra_time"
   use: (game) ->
     this.name
 
 #
-# Game.Helpers.Pass
+# Game.Specials.Pass
 #
-class Game.Helpers.Pass
+class Game.Specials.Pass
   name: "pass"
   use: (game) ->
     this.name
 
 #
-# Game.Helpers.Countdown
+# Game.Specials.Countdown
 #
 class Game.Countdown
   constructor: (data) ->
@@ -183,11 +192,13 @@ class Game.Countdown
 
   update: ->
     @timer = new Date()
+    $(@container).removeClass('counter-' + (@counter + 1))
 
     if (@counter < 0)
       this.stop()
       @game.ask()
     else
+      $(@container).addClass('counter-' + @counter)
       $(@container).html(@counter)
       @counter -= 1
 

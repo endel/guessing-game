@@ -28,14 +28,6 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "helpers", :force => true do |t|
-    t.string   "name"
-    t.float    "price"
-    t.string   "identifier"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "picture_categories", :force => true do |t|
     t.integer  "category_id"
     t.integer  "picture_id"
@@ -66,17 +58,25 @@ ActiveRecord::Schema.define(:version => 20121013000514) do
 
   add_index "rankings", ["user_id"], :name => "index_rankings_on_user_id"
 
-  create_table "user_helpers", :force => true do |t|
+  create_table "specials", :force => true do |t|
+    t.string   "name"
+    t.float    "price"
+    t.string   "identifier"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_specials", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "helper_id"
+    t.integer  "special_id"
     t.string   "name"
     t.integer  "qtt"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  add_index "user_helpers", ["helper_id"], :name => "index_user_helpers_on_helper_id"
-  add_index "user_helpers", ["user_id"], :name => "index_user_helpers_on_user_id"
+  add_index "user_specials", ["special_id"], :name => "index_user_specials_on_special_id"
+  add_index "user_specials", ["user_id"], :name => "index_user_specials_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name"
