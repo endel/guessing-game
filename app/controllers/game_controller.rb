@@ -9,7 +9,7 @@ class GameController < ApplicationController
 
   # GET
   def ranking
-
+    
   end
 
   # GET
