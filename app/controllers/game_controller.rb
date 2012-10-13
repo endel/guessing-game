@@ -4,7 +4,6 @@ class GameController < ApplicationController
   # GET
   def index
     @matters = Matter.all
-    
     render :layout => 'login' unless @user.present?
   end
 
@@ -15,7 +14,7 @@ class GameController < ApplicationController
 
   # GET
   def play
-    @matters = Matter.where("id = ?", params[:matters])
+    @matters = Matter.where(:id => params[:matters])
     session[:matters] = @matters.collect {|x| x.id }
   end
 
@@ -24,8 +23,9 @@ class GameController < ApplicationController
     # Time is up! No scoring and get another question.
     if params['timeout']
     end
-    all_categories = Matter.where("id = ?", params[:matters]).collect {|x| x.categories.split(",") }
-    
+
+    all_categories = Matter.where(:id => session[:matters]).collect {|x| x.categories.split(",") }
+
     @category = Category.where(:id => all_categories).order(db_rand_func).first
     @options = @category.pictures.order(db_rand_func).limit(6).to_a
     @answer = @options.first
