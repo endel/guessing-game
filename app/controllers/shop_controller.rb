@@ -6,15 +6,17 @@ class ShopController < ApplicationController
   
   # POST
   def buy
-    cart = params[:available_helpers].select {|v,k| v[k].present? }
+    cart = params[:available_helpers].select {|v,k| v[k].nil? }
+    puts "CART=>#{cart.inspect}"
     total = 0
-    cart.each {|v,k| total += Helper.find(v).price.to_i }
-
+    cart.each {|v,k| total += (Helper.find(v).price.to_i * k.to_i) }
+    puts "TOTAL=>#{total.inspect}"
     # Verify if the user has money to buy all items
     if @user.coins >= total
       # Buy the helpers selected
       cart.each do |h|
         helper = Helper.find(h.first)
+        puts "BUY=> #{helper.name}"
         @user.buy(helper, h[1] ||= 0)
       end
       render :json => { :message => "You bought!" }
