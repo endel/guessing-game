@@ -15,7 +15,9 @@ class SessionsController < ApplicationController
         :name => auth_hash['info']['name'],
         :image => auth_hash['info']['image'],
         :email => auth_hash['info']['email'],
-        :nickname => auth_hash['info']['nickname']
+        :nickname => auth_hash['info']['nickname'],
+        :locale => hash['extra']['raw_info']['locale'],
+        :timezone => hash['extra']['raw_info']['timezone']
       })
       user.authorizations.build :provider => auth_hash["provider"], :uid => auth_hash["uid"]
       user.save

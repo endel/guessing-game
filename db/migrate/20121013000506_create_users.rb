@@ -6,6 +6,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :nickname
       t.string :image
       t.float :score,     :default => 0
+      t.string :locale
+      t.integer :timezone
 
       t.timestamps
     end
