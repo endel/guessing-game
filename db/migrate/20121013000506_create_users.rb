@@ -5,9 +5,10 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :nickname
       t.string :image
-      t.float :score,     :default => 0
+      t.integer :score,   :default => 0
       t.string :locale
       t.integer :timezone
+      t.float :coins,     :default => 0
 
       t.timestamps
     end

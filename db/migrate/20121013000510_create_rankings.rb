@@ -2,7 +2,7 @@ class CreateRankings < ActiveRecord::Migration
   def change
     create_table :rankings do |t|
       t.belongs_to :user
-      t.float :score
+      t.integer :score
 
       t.timestamps
     end
