@@ -6,8 +6,9 @@ class ApplicationController < ActionController::Base
   # Load author context
   #
   def load_context!
-    session[:user_id] = User.first.id if Rails.env.development?
+    #session[:user_id] = User.first.id if Rails.env.development?
     return unless session[:user_id]
+
     @user = User.find(session[:user_id])
   end
 
