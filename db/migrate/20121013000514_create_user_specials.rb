@@ -3,7 +3,6 @@ class CreateUserSpecials < ActiveRecord::Migration
     create_table :user_specials do |t|
       t.references :user
       t.references :special
-      t.string :name
       t.integer :qtt
 
       t.timestamps
