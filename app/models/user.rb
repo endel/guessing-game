@@ -8,20 +8,20 @@ class User < ActiveRecord::Base
 
   validates :name, :email, :presence => true
 
-  def buy(helper, qtt)
+  def buy(special, qtt)
     # Implement a nested transaction here
 
       # if the user has sufficient coins to buy, let`s sell
-      if self.coins >= (helper.price * qtt.to_i)
+      if self.coins >= (special.price * qtt.to_i)
 
-        if self.user_helpers.where(:helper_id => helper.id).size == 0
-          self.user_helpers.create(:helper_id => helper.id, :qtt => qtt)
+        if self.user_specials.where(:special_id => special.id).size == 0
+          self.user_specials.create(:special_id => special.id, :qtt => qtt)
         else
-          user_helper = self.user_helpers.where(:helper_id => helper.id).first
-          user_helper.update_attributes(:qtt => (user_helper.qtt.to_i + qtt.to_i))
+          user_special = self.user_specials.where(:special_id => special.id).first
+          user_special.update_attributes(:qtt => (user_special.qtt.to_i + qtt.to_i))
         end
 
-        self.coins = self.coins - (helper.price * qtt.to_i)
+        self.coins = self.coins - (special.price * qtt.to_i)
         self.save
       end
 
