@@ -38,19 +38,14 @@ class GameController < ApplicationController
 
   # POST
   def answer
-    puts "lalalalalala: #{session['answer']} / #{params['answer']}"
     if session['answer'].to_s == params['answer']
-      puts 'PURURUCA'
       # Time in miliseconds
       @user.score += (10000 - params['time'].to_i) / 100 # Best score is 100 points per hit
 
 
       @user.save
-      # SCORE
-      #
     end
 
     redirect_to :action => :ask
   end
-
 end
