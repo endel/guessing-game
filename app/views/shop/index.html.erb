@@ -1,0 +1,55 @@
+<%= javascript_tag do %>
+  $(function (){
+    $(".buy_helper").validate({
+    	errorPlacement: function(error, element) { return false; },
+
+    	submitHandler: function() {
+        console.log("REQUEST")
+    		$('span#loading').show();
+
+        $.ajax({
+            url: "<%= shop_buy_path %>.json",
+            cache: false,
+            dataType: 'json',
+            type: 'POST',
+            data: $(".buy_helper").serialize(),
+            success: function (data, success) {
+                alert( data.message );
+            }
+        });
+  		
+    	}
+    });
+
+    $(".update_total").focusout(function(){
+      var total = 0;
+
+      for(i = 0; i < $(".helper-info").length; i++){
+        var price = isNaN(parseInt($($(".helper-info")[i]).find(".price").text())) ? 0 : parseInt($($(".helper-info")[i]).find(".price").text());
+        var qtt = isNaN(parseInt($($(".helper-info")[i]).find('.update_total').val())) ? 0 : parseInt($($(".helper-info")[i]).find('.update_total').val());
+
+        total = total + (price * qtt);
+      }
+      
+      // Update the total
+      $("#total").text(total);
+    });
+    
+  });
+<% end %>
+<div id="total">
+  0
+</div>
+<%= simple_form_for "available_helpers", :html => { :class => "buy_helper" } do |f| %>
+  <% @helpers.each do |helper| %>
+  <div class="helper-info" id="<%= helper.id %>">
+    <%= helper.name %>
+    <span class="price"><%= helper.price %></span>
+    <%#= f.simple_fields_for "#{helper.id}" do |h| %>
+    <%#= h.input :id, :as => :hidden, :input_html => { :value => helper.id } %>
+    <%= f.input "#{helper.id}", :required => false, :label => false, :input_html => { :class => "update_total" } %>
+    <%# end %>
+  </div>
+  <% end %>
+  <%= f.submit "Buy" %>  
+<% end %>

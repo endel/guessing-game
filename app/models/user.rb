@@ -10,7 +10,11 @@ class User < ActiveRecord::Base
   def buy(helper, qtt)
     # if the user has sufficient coins to buy, let`s sell
     if self.coins >= (helper.price * qtt.to_i)
-      self.user_helpers.create(:helper => helper, :qtt => qtt)
+      
+      self.user_helpers.where(:helper => helper).size == 0 ?
+      self.user_helpers.create(:helper => helper, :qtt => qtt) :
+      self.user_helpers.where(:helper => helper).first.update_attributes(:qtt => qtt)
+
       true
     else
       false
