@@ -3,11 +3,6 @@ class GameController < ApplicationController
 
   # GET
   def index
-    if @user.present?
-      redirect_to :action => :play
-    else
-      render :layout => 'login'
-    end
   end
 
   # GET
@@ -26,8 +21,8 @@ class GameController < ApplicationController
     if params['timeout']
     end
 
-    @category = Category.order("RANDOM()").first
-    @options = @category.pictures.order("RANDOM()").limit(6).to_a
+    @category = Category.order(db_rand_func).first
+    @options = @category.pictures.order(db_rand_func).limit(6).to_a
     @answer = @options.first
     session['answer'] = @answer.id
 
@@ -51,4 +46,9 @@ class GameController < ApplicationController
 
     redirect_to :action => :ask
   end
+
+  protected
+    def db_rand_func
+      (Rails.env.production?) ? 'RAND()' : 'RANDOM()'
+    end
 end

@@ -4,7 +4,7 @@ class UserController < ApplicationController
 
   def login
     if @user.present?
-      redirect_to :action => :play
+      redirect_to game_path
     else
       render :layout => 'login'
     end
