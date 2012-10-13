@@ -25,11 +25,7 @@ Ranking.destroy_all
 Matter.destroy_all
 
 user = User.first
-Ranking.create([
-  { :user_id => user.id, :score => 120 },
-  { :user_id => user.id, :score => 150 },
-  { :user_id => user.id, :score => 30 },
-])
+
 
 cachorros = Category.create(:name => "Cachorros")
 cachorros.pictures.create([
@@ -67,6 +63,12 @@ user.user_specials.create([
 matters = Matter.create([
   {:name => "Cachorros", :categories => "1"},
   {:name => "Carros", :categories => "2,3,4,5"},
+])
+
+Ranking.create([
+  { :user_id => user.id, :score => 120, :matter_id => 1 },
+  { :user_id => user.id, :score => 150, :matter_id => 1 },
+  { :user_id => user.id, :score => 30, :matter_id => 1 },
 ])
 
 #'Old English Sheepdog'

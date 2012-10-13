@@ -29,7 +29,7 @@ class GameController < ApplicationController
     @category = Category.where(:id => all_categories).order(db_rand_func).first
     @options = @category.pictures.order(db_rand_func).limit(6).to_a
     @answer = @options.first
-    session['answer'] = @answer.id
+    session['answer_id'] = @answer.id
 
     #
     # TODO: encode with JSON for security
@@ -41,12 +41,20 @@ class GameController < ApplicationController
 
   # POST
   def answer
-    if session['answer'].to_s == params['answer']
+    if session['answer_id'].to_s == params['answer_id']
       # Time in miliseconds
-      @user.score += (10000 - params['time'].to_i) / 100 # Best score is 100 points per hit
-
-
+      total_score = (10000 - params['time'].to_i) / 100
+      @user.score +=  total_score# Best score is 100 points per hit
       @user.save
+      
+      ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
+      if ranking.nil?
+        @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => total_score)
+      else
+        ranking.score += total_score
+        ranking.save
+      end
+        
     end
 
     redirect_to :action => :ask
