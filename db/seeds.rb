@@ -21,6 +21,7 @@ Category.destroy_all
 PictureCategory.destroy_all
 Picture.destroy_all
 Ranking.destroy_all
+Matter.destroy_all
 
 user = User.first
 Ranking.create([
@@ -61,6 +62,11 @@ user.user_specials.create([
   {:special_id => Special.find_by_identifier('cut').id, :qtt => 2},
   {:special_id => Special.find_by_identifier('pass').id, :qtt => 2}
 ])
+
+# matters = Matter.create([
+#   {:name => "Cachorros", :categories => "1"},
+#   {:name => "Carros", :categories => "2,3,4,5"},
+# ])
 
 #'Old English Sheepdog'
 #'Griffon de Nivernais'
