@@ -1,0 +1,55 @@
+<%= javascript_tag do %>
+  $(function(){
+    var game = new Game({
+      user: <%= raw @user.to_json %>,
+      image: '#image',
+      options_container: '#options',
+      countdown_container: '#countdown'
+    });
+    game.ask();
+  });
+<% end %>
+
+<!-- Templates -->
+<script id="image_tpl" type="text/x-handlebars-template">
+  <img src="{{url}}" alt="?" />
+</script>
+
+<script id="option_tpl" type="text/x-handlebars-template">
+  <a href="#" class="option" data-id="{{id}}">{{name}}</a>
+</script>
+
+<div ></div>
+
+<div class="middle">
+  <div class="true" style="padding-top: 100px;">
+    <div class="game-left">
+      <span><%= @user.score %></span>points
+    </div>
+    <div class="game-center">
+      <img src="/assets/focus-mask.png" alt="Guessing Game" title="Guessing Game" class="mask" />
+      <div id="image" class="image"></div>
+    </div>
+    <div class="game-right">
+      <span id="countdown"></span>seconds
+    </div>
+    <div id="helpers" class="powerup">
+      <a id="cut" href="#" style="margin-left: 400px;">
+        <img src="/assets/cut-off.png" alt="Eliminate two wrong answers." title="Eliminate two wrong answers."/>00
+      </a>
+      <!--
+      <a id="cut" href="#">
+        <img src="/assets/clue-on.png" alt="Get a clue" title="Get a clue"/>03
+      </a>
+      -->
+      <a id="pass" href="#">
+        <img src="/assets/next-on.png" alt="Go to next question" title="Go to next question"/>11
+      </a>
+      <a id="extra_time" href="#">
+        <img src="/assets/time-off.png" alt="Make the time pass more slowly" title="Make the time pass more slowly"/>00
+      </a>
+    </div>
+    <div id="options" class="answers">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,306 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+* {margin: 0; padding: 0;}
+body { text-align: center; }
+
+@charset 'UTF-8';
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a,<wbr> abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: inherit;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+    font-family: Verdana;
+    background: url('/assets/bg.png') repeat 0px 0px #292929;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.total {
+    width: 100%;
+}
+
+.true {
+    width: 1000px;
+    margin: 0px auto;
+    overflow: hidden;
+}
+
+.header {
+    width: 100%;
+    background-color: #000000;
+}
+
+.logo {
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+}
+
+.top-info {
+    float: right;
+    width: 100%;
+    text-align: right;
+    font-size: 11px;
+    color: #dddddd;
+    margin-top: 20px;
+}
+
+.header ul {
+    width: 100%;
+    font-size: 18px;
+    text-transform: uppercase;
+    padding: 0px 248px;
+    margin-top: 10px;
+}
+
+.header ul li {
+    padding: 0px 0px;
+    float: left;
+}
+
+.header ul li a {
+    color: #dcdcdc;
+    text-decoration: none;
+    display: block;
+    padding: 20px 20px;
+    background-color: #000000;
+}
+
+.header ul li a:hover, .header ul li a.active {
+    color: #769b24;
+}
+
+.header ul li a.active {
+    background: url('/assets/bullet-menu.png') no-repeat center bottom #000000;
+}
+
+.game-left {
+    background: url('/assets/bg-gameleft.png') no-repeat scroll -3px 68px transparent;
+    color: #FFFFFF;
+    float: left;
+    font-size: 14px;
+    height: 168px;
+    margin-top: 134px;
+    padding-top: 100px;
+    text-align: center;
+    width: 180px;
+    margin-left: 180px;
+}
+
+.game-left span {
+    display: block;
+    font-size: 35px;
+    padding-bottom: 5px;
+}
+
+.game-right span {
+    display: block;
+    font-size: 35px;
+    padding-bottom: 5px;
+}
+
+.middle {
+    padding: 0px 0px 50px;
+    background: url('/assets/bg-middle.png') no-repeat scroll center top transparent;
+}
+
+.game-center {
+    float: left;
+    width: 560px;
+    position: relative;
+    height: 400px;
+    margin: 0px -160px;
+}
+
+.game-center .mask {
+    position: absolute;
+    top: -95px;
+    z-index: 3;
+}
+
+.game-center .image {
+    height: 300px;
+    left: 140px;
+    overflow: hidden;
+    position: absolute;
+    top: 39px;
+    width: 300px;
+    z-index: 2;
+}
+
+.game-right {
+    margin-top: 134px;
+    margin-left: 16px;
+    background: url('/assets/bg-gameright.png') no-repeat scroll -3px 68px transparent;
+    color: #FFFFFF;
+    float: left;
+    font-size: 14px;
+    height: 168px;
+    padding-top: 100px;
+    text-align: center;
+    width: 180px;
+}
+
+.powerup {
+    width: 100%;
+    padding-bottom: 10px;
+    margin-top: -30px;
+    float: left;
+    font-size: 11px;
+    text-align: center;
+}
+
+.powerup a {
+    text-decoration: none;
+    color: #777777;
+    float: left;
+    display: block;
+    margin: 10px;
+    width: 33px;
+}
+
+.answers {
+    width: 100%;
+    height: 150px;
+    float: left;
+}
+
+.answers a {
+    display: block;
+    float: left;
+    padding: 20px 20px;
+    width: 283px;
+    text-decoration: none;
+    text-align: center;
+    margin: 5px;
+    color: #bebebe;
+    font-size: 15px;
+    background-color: #141517;
+    text-shadow: 1px 1px 1px #000000;
+    filter: dropshadow(color=#000000, offx=1, offy=1);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    -webkit-box-shadow: inset 0px 1px 1px 1px #000;
+    -moz-box-shadow: inset 0px 1px 1px 1px #000;
+    box-shadow: inset 0px 1px 1px 1px #000;
+}
+
+.answers a:hover {
+    background-color: #252628;
+}
+
+.answers a.success {
+    text-shadow: 1px 1px 1px #5e7727;
+    filter: dropshadow(color=#5e7727, offx=1, offy=1);
+    color: #193e0b;
+    -webkit-box-shadow: inset 0px 1px 1px 1px #000;
+    -moz-box-shadow: inset 0px 1px 1px 1px #000;
+    box-shadow: inset 0px 1px 1px 1px #000;
+    background-image: linear-gradient(bottom, rgb(101,128,42) 29%, rgb(149,187,66) 70%);
+    background-image: -o-linear-gradient(bottom, rgb(101,128,42) 29%, rgb(149,187,66) 70%);
+    background-image: -moz-linear-gradient(bottom, rgb(101,128,42) 29%, rgb(149,187,66) 70%);
+    background-image: -webkit-linear-gradient(bottom, rgb(101,128,42) 29%, rgb(149,187,66) 70%);
+    background-image: -ms-linear-gradient(bottom, rgb(101,128,42) 29%, rgb(149,187,66) 70%);
+    background-image: -webkit-gradient(
+  linear,
+  left bottom,
+  left top,
+  color-stop(0.29, rgb(101,128,42)),
+  color-stop(0.7, rgb(149,187,66))
+);
+}
+
+.answers a.error {
+    color: #2f0606;
+    -webkit-box-shadow: inset 0px 1px 1px 1px #000;
+    -moz-box-shadow: inset 0px 1px 1px 1px #000;
+    box-shadow: inset 0px 1px 1px 1px #000;
+    text-shadow: 1px 1px 1px #9b3431;
+    filter: dropshadow(color=#9b3431, offx=1, offy=1);
+    background-image: linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
+    background-image: -o-linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
+    background-image: -moz-linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
+    background-image: -webkit-linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
+    background-image: -ms-linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
+    background-image: -webkit-gradient(
+  linear,
+  left bottom,
+  left top,
+  color-stop(0.39, rgb(138,60,21)),
+  color-stop(0.7, rgb(191,80,25))
+);
+}
+
+.footer {
+    text-align: center;
+    color: #dddddd;
+    padding: 10px 0px;
+    margin-top: 80px;
+    background-color: #000000;
+}
+
+.footer a {
+    color: #ffffff;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
