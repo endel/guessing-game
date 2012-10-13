@@ -6,7 +6,7 @@ Guessingame::Application.routes.draw do
   get "game/ask", :as => :game_ask
   get "game/play", :as => :game_play
   post "game/answer", :as => :game_answer
-  
+
   # Rankings routes
   get "rankings/weekly", :as => :ranking_weekly
   get "rankings/monthly", :as => :ranking_monthly
@@ -20,7 +20,7 @@ Guessingame::Application.routes.draw do
   get "shop/index", :as => :shop
   post "shop/buy", :as => :shop_buy
 
-  root :to => 'game#index'
+  root :to => 'user#login'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

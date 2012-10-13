@@ -17,6 +17,7 @@ task :deploy do
     invoke :'git:clone'
     invoke :'bundle:install'
     invoke :'rails:assets_precompile'
+    invoke :migrate_public_files
     invoke :migrate
     invoke :restart
   end
@@ -48,4 +49,10 @@ end
 
 task :migrate do
   queue "cd #{deploy_to}/$build_path/ RAILS_ENV=production bundle exec rake db:drop && RAILS_ENV=production bundle exec rake db:create && RAILS_ENV=production bundle exec rake db:migrate && RAILS_ENV=production bundle exec rake db:seed"
+end
+
+task :migrate_public_files do
+  queue "mkdir -p #{deploy_to}/current/public/uploads"
+  queue "mv #{deploy_to}/current/public/uploads #{deploy_to}/$build_path/public/"
+  queue "chmod -R 755 #{deploy_to}/$build_path/public/uploads"
 end
