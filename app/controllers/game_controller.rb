@@ -24,19 +24,24 @@ class GameController < ApplicationController
     if params['timeout']
     end
 
-    all_categories = Matter.where(:id => session[:matters]).collect {|x| x.categories.split(",") }
+    category_matter_id = {}
+    category_ids = Matter.where(:id => session[:matters]).collect do |x|
+      categories = x.categories.split(",")
+      categories.each {|category_id| category_matter_id[category_id.to_i] = x.id }
+      categories
+    end
 
-    @category = Category.where(:id => all_categories).order(db_rand_func).first
+    @category = Category.where(:id => category_ids).order(db_rand_func).first
     @options = @category.pictures.order(db_rand_func).limit(6).to_a
-    @answer = @options.first
-    session['answer'] = @answer.id
+    @answer = @options.first.as_json.merge(:matter_id => category_matter_id[ @category.id ])
+    session['answer'] = @answer[:id]
 
     #
     # TODO: encode with JSON for security
     #
     # require "base64"
     # Base64.encode64({:picture => @picture, :options => @options.collect {|x| x.name }}.to_json)
-    render :json => {:answer => @answer, :options => @options.as_json(:tiny => true)}
+    render :json => {:user => @user.as_json, :answer => @answer, :options => @options.as_json(:tiny => true)}
   end
 
   # POST
