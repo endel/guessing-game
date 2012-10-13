@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :score,   :default => 0
       t.string :locale
       t.integer :timezone
-      t.float :coins,     :default => 0
+      t.integer :coins,     :default => 0
 
       t.timestamps
     end

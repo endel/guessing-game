@@ -1,6 +1,6 @@
 <%= javascript_tag do %>
   $(function (){
-    $(".buy_helper").validate({
+    $(".buy_special").validate({
     	errorPlacement: function(error, element) { return false; },
 
     	submitHandler: function() {
@@ -11,10 +11,10 @@
             cache: false,
             dataType: 'json',
             type: 'POST',
-            data: $(".buy_helper").serialize(),
+            data: $(".buy_special").serialize(),
             success: function (data, success) {
                 alert( data.message );
-                $(".buy_helper")[0].reset();
+                $(".buy_special")[0].reset();
                 $("#total").text("0");
             }
         });
@@ -25,9 +25,9 @@
     $(".update_total").focusout(function(){
       var total = 0;
 
-      for(i = 0; i < $(".helper-info").length; i++){
-        var price = isNaN(parseInt($($(".helper-info")[i]).find(".price").text())) ? 0 : parseInt($($(".helper-info")[i]).find(".price").text());
-        var qtt = isNaN(parseInt($($(".helper-info")[i]).find('.update_total').val())) ? 0 : parseInt($($(".helper-info")[i]).find('.update_total').val());
+      for(i = 0; i < $(".special-info").length; i++){
+        var price = isNaN(parseInt($($(".special-info")[i]).find(".price").text())) ? 0 : parseInt($($(".special-info")[i]).find(".price").text());
+        var qtt = isNaN(parseInt($($(".special-info")[i]).find('.update_total').val())) ? 0 : parseInt($($(".special-info")[i]).find('.update_total').val());
 
         total = total + (price * qtt);
       }
@@ -38,16 +38,16 @@
     
   });
 <% end %>
-<div id="helpers">
+<div id="specials">
 <div id="total">
   0
 </div>
-<%= simple_form_for "available_helpers", :html => { :class => "buy_helper" } do |f| %>
-  <% @helpers.each do |helper| %>
-  <div class="helper-info" id="<%= helper.id %>">
-    <%= helper.name %>
-    <span class="price"><%= helper.price %></span>
-    <%= f.input "#{helper.id}", :required => false, :label => false, :input_html => { :class => "update_total" } %>
+<%= simple_form_for "available_specials", :html => { :class => "buy_special" } do |f| %>
+  <% @specials.each do |special| %>
+  <div class="special-info" id="<%= special.id %>">
+    <%= special.name %>
+    <span class="price"><%= special.price %></span>
+    <%= f.input "#{special.id}", :required => false, :label => false, :input_html => { :class => "update_total" } %>
   </div>
   <% end %>
   <%= f.submit "Buy" %>  

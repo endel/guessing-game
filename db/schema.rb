@@ -92,9 +92,9 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
     t.integer  "score",      :default => 0
     t.string   "locale"
     t.integer  "timezone"
-    t.float    "coins",      :default => 0.0
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.integer  "coins",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.string   "country"
   end
 
