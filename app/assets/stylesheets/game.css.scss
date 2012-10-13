@@ -1,3 +1,19 @@
 // Place all the styles related to the game controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.matter-option {
+  display: block;
+}
+
+.selected {
+  background: #999;
+  border: 2px Solid #FFF;
+}
+
+#start {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.checkbox input { display: none; }

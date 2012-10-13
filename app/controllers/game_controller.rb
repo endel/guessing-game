@@ -3,6 +3,8 @@ class GameController < ApplicationController
 
   # GET
   def index
+    @matters = Matter.all
+    render :layout => 'login' unless @user.present?
   end
 
   # GET
@@ -12,7 +14,8 @@ class GameController < ApplicationController
 
   # GET
   def play
-
+    @matters = Matter.where(:id => params[:matters])
+    session[:matters] = @matters.collect {|x| x.id }
   end
 
   # GET
@@ -21,7 +24,9 @@ class GameController < ApplicationController
     if params['timeout']
     end
 
-    @category = Category.order(db_rand_func).first
+    all_categories = Matter.where(:id => session[:matters]).collect {|x| x.categories.split(",") }
+
+    @category = Category.where(:id => all_categories).order(db_rand_func).first
     @options = @category.pictures.order(db_rand_func).limit(6).to_a
     @answer = @options.first
     session['answer'] = @answer.id

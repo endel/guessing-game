@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
     t.string   "uid"
-    t.integer  "author_id"
+    t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
 
   create_table "rankings", :force => true do |t|
     t.integer  "user_id"
-    t.float    "score"
+    t.integer  "score"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "matter_id"
@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
   create_table "user_specials", :force => true do |t|
     t.integer  "user_id"
     t.integer  "special_id"
-    t.string   "name"
     t.integer  "qtt"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -91,10 +90,12 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
     t.string   "email"
     t.string   "nickname"
     t.string   "image"
-    t.float    "score",      :default => 0.0
+    t.integer  "score",      :default => 0
+    t.string   "locale"
+    t.integer  "timezone"
+    t.float    "coins",      :default => 0.0
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
-    t.float    "coins",      :default => 0.0
     t.string   "country"
   end
 
