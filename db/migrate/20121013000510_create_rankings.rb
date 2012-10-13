@@ -3,8 +3,7 @@ class CreateRankings < ActiveRecord::Migration
     create_table :rankings do |t|
       t.belongs_to :user
       t.integer :score
-
-      t.timestamps
+      t.datetime :week_date
     end
     add_index :rankings, :user_id
   end
