@@ -34,27 +34,41 @@ class GameController < ApplicationController
     @category = Category.where(:id => category_ids).order(db_rand_func).first
     @options = @category.pictures.order(db_rand_func).limit(6).to_a
     @answer = @options.first.as_json.merge(:matter_id => category_matter_id[ @category.id ])
-    session['answer'] = @answer[:id]
+    session['answer_id'] = @answer[:id]
+
+    puts params.inspect
 
     #
     # TODO: encode with JSON for security
     #
     # require "base64"
     # Base64.encode64({:picture => @picture, :options => @options.collect {|x| x.name }}.to_json)
-    render :json => {:user => @user.as_json, :answer => @answer, :options => @options.as_json(:tiny => true)}
+    render :json => {:score => params[:score] || 0, :user => @user.as_json, :answer => @answer, :options => @options.as_json(:tiny => true)}
   end
 
   # POST
   def answer
-    if session['answer'].to_s == params['answer']
-      # Time in miliseconds
-      @user.score += (10000 - params['time'].to_i) / 100 # Best score is 100 points per hit
+    score = 0
 
+    if session['answer_id'].to_s == params['answer_id']
 
+      # Best score is 100 points per hit
+      score = (10000 - params['time'].to_i) / 100
+
+      @user.score += score
       @user.save
+
+      ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
+      if ranking.nil?
+        @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => score)
+      else
+        ranking.score += score
+        ranking.save
+      end
+
     end
 
-    redirect_to :action => :ask
+    redirect_to :action => :ask, :score => score
   end
 
   protected

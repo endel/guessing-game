@@ -18,13 +18,20 @@ class window.Game
 
     # Controllers
     @user = new Game.User(data.user)
+
     @countdown = new Game.Countdown({
       game: this,
       container: data.countdown_container
     })
+
     @specials = new Game.Specials({
       game: this,
       container: "#specials"
+    })
+
+    @transitioner = new Game.Transitioner()
+    @scorer = new Game.Scorer({
+      container: '#score-container'
     })
 
     # Bind onclick
@@ -60,6 +67,14 @@ class window.Game
 
     @countdown.start()
 
+  # Update score UI
+  update_score: (data) ->
+    # Preload next image
+    img = new Image()
+    img.src = data.answer.url
+
+    @scorer.update( parseInt(data.score) )
+
   # Answer the question
   answer: (options) ->
     id = options.id
@@ -75,7 +90,8 @@ class window.Game
       $(@options_sel + " [data-id="+@options.answer.id+"]").addClass('success')
 
     @countdown.stop()
-    $.post '/game/answer', { time: @countdown.elapsed_time, answer: id }, (data) ->
+    $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id }, (data) ->
+      that.update_score(data)
       delay 1000, ->
         that.build_answers.call(that, data)
 
@@ -157,6 +173,8 @@ class Game.Specials.Cut extends Game.Specials.Base
 class Game.Specials.ExtraTime extends Game.Specials.Base
   name: "extra_time"
   use: (game) ->
+    game.countdown.counter += 11
+    game.countdown.update()
     this.name
 
 #
@@ -165,6 +183,11 @@ class Game.Specials.ExtraTime extends Game.Specials.Base
 class Game.Specials.Pass extends Game.Specials.Base
   name: "pass"
   use: (game) ->
+    # Your answer is correct!
+    game.answer({
+      id: game.options.answer.id,
+      target: this
+    })
     this.name
 
 #
@@ -199,15 +222,53 @@ class Game.Countdown
 
     if (@counter < 0)
       this.stop()
-      @game.ask()
+
+      # Get first wrong answer
+      wrong_answers = []
+      for option in @game.options.list
+        if option.id != @game.options.answer.id
+          return @game.answer({id: wrong_answers[0], target: null})
+
     else
       $(@container).addClass('counter-' + @counter)
       $(@container).html(@counter)
       @counter -= 1
 
+class Game.Transitioner
+  constructor: (game) ->
+    @game = game
+
 #
 # Game.Scorer
 #
 class Game.Scorer
-  constructor: (countdown) ->
-    @countdown = countdown
+  constructor: (data) ->
+    @score = 0
+    @questions = 0
+    @container = data.container
+
+    # Ticks
+    @tick_interval = null
+    @score_tmp = 0
+  update: (add_score) ->
+    @questions += 1
+    @score_tmp = @score
+    @score += add_score
+
+    if add_score > 0
+      # Keep ticking +1 until it shows the actual score
+      that = this
+      @tick_interval = interval 1, ->
+        that.quick_tick()
+
+      # Bounce effect
+      $(@container).addClass('bounceIn')
+      delay 2000, ->
+        $("#score-container").removeClass('bounceIn')
+
+  quick_tick: ->
+    if (@score_tmp < @score)
+      @score_tmp += 1
+      $(@container + " span").html( @score_tmp )
+    else
+      clearInterval @tick_interval

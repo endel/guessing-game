@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :specials, :through => :user_specials
 
   validates :name, :email, :presence => true
+  has_many :rankings
 
   def buy(helper, qtt)
     # Implement a nested transaction here
@@ -27,7 +28,6 @@ class User < ActiveRecord::Base
 
   end
   def as_json(*args)
-    puts self.specials.inspect
     self.attributes.merge({
       :specials => Hash[self.user_specials.collect {|uh| [uh.special.identifier, uh.qtt] }]
     })
