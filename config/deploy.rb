@@ -17,6 +17,7 @@ task :deploy do
     invoke :'git:clone'
     invoke :'bundle:install'
     invoke :'rails:assets_precompile'
+    invoke :migrate
     invoke :restart
   end
 end
@@ -43,4 +44,8 @@ end
 task :logs do
   queue 'echo "Contents of the log file are as follows:"'
   queue "tail -f #{deploy_to}/current/log/production.log"
+end
+
+task :migrate do
+  queue "cd #{deploy_to}/$build_path/ RAILS_ENV=production bundle exec rake db:drop && RAILS_ENV=production bundle exec rake db:create && RAILS_ENV=production bundle exec rake db:migrate && RAILS_ENV=production bundle exec rake db:seed"
 end

@@ -1,11 +1,13 @@
-require "base64"
-
 class GameController < ApplicationController
   before_filter :prevent_cache, :only => [:ask, :answer]
 
   # GET
   def index
-    redirect_to :action => :play if @user.present?
+    if @user.present?
+      redirect_to :action => :play
+    else
+      render :layout => 'login'
+    end
   end
 
   # GET
@@ -32,6 +34,7 @@ class GameController < ApplicationController
     #
     # TODO: encode with JSON for security
     #
+    # require "base64"
     # Base64.encode64({:picture => @picture, :options => @options.collect {|x| x.name }}.to_json)
     render :json => {:answer => @answer, :options => @options.as_json(:tiny => true)}
   end

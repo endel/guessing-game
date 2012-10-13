@@ -287,6 +287,11 @@ table {
 );
 }
 
+/* FIXME: I'm so uggly... */
+.answers a.disabled {
+  background: red !important;
+}
+
 .footer {
     text-align: center;
     color: #dddddd;

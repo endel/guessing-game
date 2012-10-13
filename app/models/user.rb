@@ -2,8 +2,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, :name, :score, :nickname, :image, :coins
   has_many :authorizations
 
-  has_many :user_helpers
-  has_many :helpers, :through => :user_helpers
+  has_many :user_specials
+  has_many :specials, :through => :user_specials
 
   validates :name, :email, :presence => true
 
@@ -25,11 +25,10 @@ class User < ActiveRecord::Base
       end
 
   end
-
   def as_json(*args)
-    puts self.helpers.inspect
+    puts self.specials.inspect
     self.attributes.merge({
-      :helpers => Hash[self.user_helpers.collect {|uh| [uh.helper.identifier, uh.qtt] }]
+      :specials => Hash[self.user_specials.collect {|uh| [uh.special.identifier, uh.qtt] }]
     })
   end
 

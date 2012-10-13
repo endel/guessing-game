@@ -49,17 +49,17 @@ cachorros.pictures.create([
   {:name => 'Pastor belga', :url => 'http://upload.wikimedia.org/wikipedia/commons/9/96/S.r.Ch.CEPPB.CH.E.Fredy_de_Belliamici%2CA.5a.cabeza.jpg' }
 ])
 
-helpers = Helper.create([
+specials = Special.create([
   {:identifier => "extra_time", :name => "Extra time", :price => 29.0},
   {:identifier => "cut", :name => "Annihilate an option", :price => 55.0},
   {:identifier => "pass", :name => "Jump the picture", :price => 50.0}
   #{:id => "extra_time", :name => "Tip", :price => 80.0},
 ])
 
-user.user_helpers.create([
-  {:helper_id => Helper.find_by_identifier('extra_time').id, :qtt => 2},
-  {:helper_id => Helper.find_by_identifier('cut').id, :qtt => 2},
-  {:helper_id => Helper.find_by_identifier('pass').id, :qtt => 2}
+user.user_specials.create([
+  {:special_id => Special.find_by_identifier('extra_time').id, :qtt => 2},
+  {:special_id => Special.find_by_identifier('cut').id, :qtt => 2},
+  {:special_id => Special.find_by_identifier('pass').id, :qtt => 2}
 ])
 
 #'Old English Sheepdog'
