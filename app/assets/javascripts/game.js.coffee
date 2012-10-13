@@ -130,7 +130,13 @@ class Game.Helpers
 #
 class Game.Helpers.Cut
   name: "cut"
-  use: ->
+  use: (game) ->
+    # Get list of ids
+    game.options.list.filter (option) ->
+      console.log(option)
+
+    $(game.options_sel + "[data-id!="+game.options.answer.id+"]")
+
     this.name
 
 #
@@ -138,7 +144,7 @@ class Game.Helpers.Cut
 #
 class Game.Helpers.ExtraTime
   name: "extra_time"
-  use: ->
+  use: (game) ->
     this.name
 
 #
@@ -146,7 +152,7 @@ class Game.Helpers.ExtraTime
 #
 class Game.Helpers.Pass
   name: "pass"
-  use: ->
+  use: (game) ->
     this.name
 
 #
