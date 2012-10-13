@@ -3,8 +3,11 @@ class GameController < ApplicationController
 
   # GET
   def index
-    render :layout => 'login'
-    redirect_to :action => :play if @user.present?
+    if @user.present?
+      redirect_to :action => :play
+    else
+      render :layout => 'login'
+    end
   end
 
   # GET
