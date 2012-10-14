@@ -33,23 +33,35 @@
       }
       
       // Update the total
-      $("#total").text(total);
+      $("#total .cart").text(total);
     });
     
   });
 <% end %>
-<div id="specials">
+<div id="specials" class="true">
 <div id="total">
-  0
+  <h1>
+    $ <span class="cart">0</span> /
+    $ <span class="coins"><%= @user.coins %></span>
+  </h1>
+  <h2>Buy specials items and get more performance.</h2>
 </div>
+<% images = { 1 => "icon-time-shop.png", 2 => "icon-cut-shop.png", 3 => "icon-next-shop.png" }
+description = { 1 => "Add 10 seconds to your answer time giving you more score.", 2 => "Eliminate 2 errors answers and maximize your successful chance.", 3 => "Jump to next question, getting the score as correct answer." }
+%>
 <%= simple_form_for "available_specials", :html => { :class => "buy_special" } do |f| %>
   <% @specials.each do |special| %>
   <div class="special-info" id="<%= special.id %>">
-    <%= special.name %>
-    <span class="price"><%= special.price %></span>
+    <div class="item-thumb">
+    <%= image_tag images[special.id] %>
+    </div>
+    <h2><%= special.name %> <span>($ <span class="price"><%= special.price %></span> un.)</span></h2>
+    <p>
+      <%= description[special.id] %>
+    </p>
     <%= f.input "#{special.id}", :required => false, :label => false, :input_html => { :class => "update_total" } %>
   </div>
   <% end %>
-  <%= f.submit "Buy" %>  
+  <%= f.submit "Buy", :class => "buy" %>  
 <% end %>
 </div>
