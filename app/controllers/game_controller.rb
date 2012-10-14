@@ -20,10 +20,6 @@ class GameController < ApplicationController
 
   # GET
   def ask
-    # Time is up! No scoring and get another question.
-    if params['timeout']
-    end
-
     category_matter_id = {}
     category_ids = Matter.where(:id => session[:matters]).collect do |x|
       categories = x.categories.split(",")
@@ -50,23 +46,37 @@ class GameController < ApplicationController
   def answer
     score = 0
 
-    if session['answer_id'].to_s == params['answer_id']
+    # Decrease each special used on this answer
+    time_qty = 1
+    if params['specials']
+      specials = {}
+      params['specials'].each do |special|
+        time_qty += 1 if special == "extra_time"
 
-      # Best score is 100 points per hit
-      score = (10000 - params['time'].to_i) / 100
-
-      @user.score += score
-      @user.save
-
-      ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
-      if ranking.nil?
-        @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => score)
-      else
-        ranking.score += score
-        ranking.save
+        special_id = SPECIAL.const_get(special.upcase)
+        specials[ special_id ] = @user.user_specials.where(:special_id => special_id).first unless specials[ special_id ]
+        specials[ special_id ].qtt -= 1
       end
-
+      specials.each_value {|special| special.save }
     end
+
+    # Is the answer correct?
+    correct = (session['answer_id'].to_s == params['answer_id'])
+
+    # Best score is 100 points per hit
+    score = ((10000*time_qty) / (params['time'].to_f / 10)) if correct
+
+    @user.score += score
+    @user.save
+
+    ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
+    if ranking.nil?
+      @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => score)
+    else
+      ranking.score += score
+      ranking.save
+    end
+
 
     redirect_to :action => :ask, :score => score
   end

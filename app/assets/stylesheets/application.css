@@ -285,10 +285,21 @@ table {
 );
 }
 
-/* FIXME: I'm so uggly... */
 .answers a.disabled {
-  background: red !important;
+  cursor: default;
+  -moz-opacity: 0.30;
+  opacity: 0.30;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=30);
+  background: none;
+  color: #ccc;
+
+  text-shadow: none;
+  filter: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
+
 
 a.play{
 	width: 240px;
@@ -451,4 +462,37 @@ h2 span{color: #f0cfa3;}
   animation-duration: 1s;
 }
 
+.animated3d {
+  width: 100%;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -ms-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition: -webkit-transform, opacity;
+  -moz-transition: -moz-transform, opacity;
+  -ms-transition: -ms-transform, opacity;
+  -o-transition: -o-transform, opacity;
+  transition: transform, opacity;
+  -webkit-transition: -webkit-transform 0.5s, opacity 0s ease;
+  -moz-transition: -moz-transform 0.5s, opacity 0s ease;
+  -moz-transition-duration: 0.5s;
+}
 
+.rotated {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+}
+
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+}
