@@ -35,16 +35,11 @@
       <a id="cut" href="#" style="margin-left: 400px;">
         <span class="counter"><%= @user.as_json[:specials]['cut'] %></span>
       </a>
-      <!--
-      <a id="hint" href="#">
-        <img src="/assets/clue-on.png" alt="Get a hint" title="Get a hint"/>03
-      </a>
-      -->
-      <a id="pass" href="#">
-        <span class="counter"><%= @user.as_json[:specials]['pass'] %></span>
-      </a>
       <a id="extra_time" href="#">
         <span class="counter"><%= @user.as_json[:specials]['extra_time'] %></span>
+      </a>
+      <a id="pass" href="#">
+        <span class="counter"><%= @user.as_json[:specials]['pass'] %></span>
       </a>
     </div>
     <div id="options" class="answers">

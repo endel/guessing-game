@@ -193,19 +193,29 @@ table {
 .game-center .image img{height: 400px;}
 
 .game-right {
-    margin-top: 134px;
-    margin-left: 38px;
-    background: url('/assets/bg-gameright.png') no-repeat scroll -3px 68px transparent;
-    color: #ffffff;
-    float: left;
-    font-size: 14px;
-    height: 108px;
-    padding-top: 100px;
-    text-align: center;
-    width: 180px;
+  border: 1px solid white;
+  margin-top: 134px;
+  margin-left: 38px;
+  background: url('/assets/bg-gameright.png') no-repeat scroll -3px 68px transparent;
+  color: #ffffff;
+  float: left;
+  font-size: 14px;
+  height: 80px;
+  padding-top: 100px;
+  text-align: center;
+  width: 180px;
 }
-.game-right.counter-10 {  }
-.game-right.counter-9 { background-position: -3px 350px  }
+
+/*.game-right.counter-10 {  }*/
+.game-right.counter-8 { background-position: -3px -72px  }
+.game-right.counter-7 { background-position: -3px -222px  }
+.game-right.counter-6 { background-position: -3px -372px  }
+.game-right.counter-5 { background-position: -3px -522px  }
+.game-right.counter-4 { background-position: -3px -672px  }
+.game-right.counter-3 { background-position: -3px -822px  }
+.game-right.counter-2 { background-position: -3px -972px  }
+.game-right.counter-1 { background-position: -3px -1122px  }
+.game-right.counter-0 { background-position: -3px -1122px  }
 
 .powerup {
     width: 100%;

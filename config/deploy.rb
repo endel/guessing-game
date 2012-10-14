@@ -18,7 +18,7 @@ task :deploy do
     invoke :'bundle:install'
     invoke :'rails:assets_precompile'
     invoke :migrate_public_files
-    invoke :migrate
+    #invoke :migrate
     invoke :restart
   end
 end

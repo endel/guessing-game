@@ -2,6 +2,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :load_context!
 
+  module SPECIAL
+    CUT = Special.find_by_identifier("cut").id
+    PASS = Special.find_by_identifier("pass").id
+    EXTRA_TIME = Special.find_by_identifier("extra_time").id
+  end
+
   #
   # Load author context
   #
@@ -20,8 +26,3 @@ class ApplicationController < ActionController::Base
 
 end
 
-module SPECIAL
-  CUT = Special.find_by_identifier("cut").id
-  PASS = Special.find_by_identifier("pass").id
-  EXTRA_TIME = Special.find_by_identifier("extra_time").id
-end

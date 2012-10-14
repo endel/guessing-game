@@ -152,7 +152,6 @@ class Game.Specials
         false
 
   try_consume: (special) ->
-    console.log(special)
     if @game.user.special[special] > 0
       @game.user.special[special] -= 1
       @specials[special].update_ui()
@@ -281,7 +280,6 @@ class Game.Scorer
     @score_tmp = 0
     @backwards = false
   update: (add_score) ->
-    console.log("score: ", add_score)
     @questions += 1
     @score_tmp = @score
     @score += add_score
