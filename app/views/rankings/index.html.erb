@@ -1,3 +1,10 @@
+<div id="ranking" class="true">
+<%= form_tag("ranking") do %>
+  <%= text_field_tag "user", "", :placeholder => "Search people" %>
+  <%= submit_tag "Search", :class => "search" %>
+<% end %>
+
+<% if defined?(@ranking) %>
 <table border="0" cellspacing="5" cellpadding="5">
   <thead>
     <tr>
@@ -16,5 +23,11 @@
     <% end %>
   </tbody>
 </table>
-
-  
+<% else %>
+Choose a ranking
+<ul>
+  <li>General</li>
+  <li>Weekly</li>
+</ul>
+<% end %>
+</div>

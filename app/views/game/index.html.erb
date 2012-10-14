@@ -9,11 +9,9 @@ $(document).ready(function(){
 <div id="start">
 <%= form_tag game_play_path, :method => :get do |f| %>
   <% @matters.each do |m| %>
-  <span class="checkbox" style="width: 20px">
-    <label>
-      <%= check_box_tag "matters[]", m.id %>
-      <%= m.name %>
-    </label>
+  <span class="checkbox">	  	
+    <%= check_box_tag "matters[]", m.id %>	  	
+    <%= m.name %>
   </span>
   <% end %>
 <%= submit_tag "Let's play"%>

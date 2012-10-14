@@ -1,0 +1,56 @@
+#ranking {
+  color: #DDD;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+#ranking h1 {
+  font-size: 50px;
+  text-align: center;
+  padding: 50px 0 5px;
+}
+
+#ranking input[type='text'] {
+  width: 400px;
+  padding: 10px;
+  text-align: center;
+  font-size: 15px;
+  background: #222;
+  border: 1px Solid #333;
+  border-radius: 20px;
+  box-shadow: 1px 1px 8px black inset;
+  color: #DDD;
+}
+
+#ranking input:focus {
+  border: 1px Solid #333;
+  outline: 0px;
+}
+
+.search{
+  color:#ffffff;
+  text-align: center;
+  font-size:15px; text-decoration: none;
+  position: relative;
+	background: #ab3d39;
+	border: 1px solid #791009;
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+border-radius: 20px;
+padding: 10px;
+text-shadow: 1px 1px 1px #555555;
+filter: dropshadow(color=#555555, offx=1, offy=1);
+-webkit-box-shadow: 0px 23px 13px -21px #000;
+-moz-box-shadow: 0px 23px 13px -21px #000;
+box-shadow: 0px 23px 13px -21px #000;
+cursor: pointer;
+
+}
+.search:hover{background-color: #c0504c;text-decoration: none!important;}
+.search:active{-webkit-box-shadow: 0 2px 2px 2px #500e0a inset;
+-moz-box-shadow: 0 2px 2px 2px #500e0a inset;
+box-shadow: 0 2px 2px 2px #500e0a inset;
+background-color: #731610;
+border: 1px solid #500e0a;
+}
