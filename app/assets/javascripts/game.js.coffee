@@ -14,6 +14,7 @@ class window.Game
     @options = null
     @last_time = null
     @image_sel = data.image
+    @message_sel = data.message
     @options_sel = data.options_container
 
     # Controllers
@@ -33,6 +34,8 @@ class window.Game
     @scorer = new Game.Scorer({
       container: '#score-container'
     })
+
+    @message_builder = new Game.MessageBuilder()
 
     # Bind onclick
     $(@options_sel).on 'click', 'a', (evt) ->
@@ -60,27 +63,43 @@ class window.Game
     image_tpl = Handlebars.compile($("#image_tpl").html())
     option_tpl = Handlebars.compile($("#option_tpl").html())
 
-    $(@image_sel).html( image_tpl( @options.answer ) )
+    # Fade in / rotate / show image
+    $(@message_sel).addClass('fadeOut').removeClass('rotated')
+
+    $(@image_sel).parent().removeClass('rotated')
+    $(@image_sel).removeClass('rotated').
+      removeClass('fadeOut').
+      addClass('fadeIn').
+      html( image_tpl( @options.answer ) )
 
     $(@options_sel).html('')
     for option in @options.list
-      $(@options_sel).append(option_tpl(option))
+      $(@options_sel).prepend(option_tpl(option))
 
     @countdown.start()
 
-  # Update score UI
-  update_score: (data) ->
+  # Show message and update score UI
+  show_message: (data) ->
     # Preload next image
     img = new Image()
     img.src = data.answer.url
 
+    # Update score UI
     @scorer.update( parseInt(data.score) )
+
+    # Fade out / rotate / show message
+    $(@image_sel).addClass('rotated').addClass('fadeOut')
+    message = @message_builder.build(data.message_type, $.extend(data, {
+      total_score: @scorer.score
+    }))
+    $(@message_sel).html(message).removeClass('fadeOut').addClass('rotated').addClass('fadeIn')
 
   # Answer the question
   answer: (options) ->
     id = options.id
     target = options.target
     that = this
+    message_type = null
 
     # Add success/error class to target, if it was set
     if target
@@ -88,22 +107,24 @@ class window.Game
       if (@options.check( $(target).data('id') ))
         # Play "answer correct"
         sounds.play('answer_correct')
-
+        message_type = 'success'
         $(target).addClass('success')
       else
         # If selected the wrong answer, highlight the right answer
         sounds.play('answer_incorrect')
+        message_type = 'error'
         $(target).addClass('error')
         $(@options_sel + " [data-id="+@options.answer.id+"]").addClass('success')
     else
-      # Timeout...
-      # Don't play when user have used 'pass' special
-      sounds.play('timeout') unless $.inArray("pass", @specials.consumed) >= 0
-
+      # Timeout... (only if 'pass' special isn't used)
+      unless $.inArray("pass", @specials.consumed) >= 0
+        message_type = 'timeout'
+        sounds.play('timeout')
 
     @countdown.stop()
     $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
-      that.update_score(data)
+      data.message_type = message_type
+      that.show_message(data)
       delay 1000, ->
         that.build_answers.call(that, data)
 
@@ -232,7 +253,7 @@ class Game.Countdown
 
   start: ->
     @paused = false
-    @counter = 10
+    @counter = 15
     @timer = new Date()
     that = this
     this.update()
@@ -305,3 +326,41 @@ class Game.Scorer
       $(@container + " span").html( @score_tmp )
     else
       clearInterval @tick_interval
+
+class Game.MessageBuilder
+  constructor: ->
+    @tpl = Handlebars.compile($('#message').html())
+    @types = {
+      error: {
+        type: 'error',
+        image_src: '/assets/messages/error.png',
+        title: 'You missed.',
+        message: '<p>Keep trying images that will appear in the next.</p>',
+      },
+      end: {
+        type: 'end',
+        image_src: '/assets/messages/end.png',
+        title: 'His round ended.',
+        message: '<p>You got {{total_score}} points, hitting <strong>{{success}}</strong> of 20 questions. <br/><a href="/rankings/summary">Check out how your ranking.</a></p>',
+      },
+      success: {
+        type: 'success',
+        image_src: '/assets/messages/success.png',
+        title: "That's it!",
+        message: '<p>Try to respond even faster to gain more points walks.</p>',
+      },
+      timeout: {
+        type: 'timeout',
+        image_src: '/assets/messages/timeout.png',
+        title: 'Time is up!',
+        message: '<p>Take care in the next time!</p>',
+      },
+    }
+  build: (type, replacements) ->
+    object = @types[type]
+    for replacement in replacements
+      console.log(replacement)
+      object.message = object.message.replace(  )
+
+    @tpl(object)
+

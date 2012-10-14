@@ -2,7 +2,8 @@
   $(function(){
     var game = new Game({
       user: <%= raw @user.to_json %>,
-      image: '#image',
+      image: '#image-container',
+      message: '#message-container',
       options_container: '#options',
       countdown_container: '#countdown'
     });
@@ -19,6 +20,14 @@
   <a href="#" class="option" data-id="{{id}}">{{name}}</a>
 </script>
 
+<script id="message" type="text/x-handlebars-template">
+  <div class="message back {{type}}">
+    <img src="{{image_src}}" alt="{{type}}" title="{{type}}" width="116" height="116" />
+    <h2>{{title}}</h2>
+    {{message}}
+  </div>
+</script>
+
 <div class="middle">
   <div class="true" style="padding-top: 100px;">
     <div id="score-container" class="game-left animated">
@@ -26,7 +35,10 @@
     </div>
     <div class="game-center">
       <img src="/assets/focus-mask.png" alt="Guessing Game" title="Guessing Game" class="mask" />
-      <div id="image" class="image"></div>
+      <div id="image" class="image animated3d">
+        <div id="message-container" class="animated animated3d"></div>
+        <div id="image-container" class="animated animated3d"></div>
+      </div>
     </div>
     <div class="game-right">
       <span id="countdown"></span>seconds

@@ -190,7 +190,7 @@ table {
     height: 400px;
     z-index: 2;
 }
-.game-center .image img{height: 400px;}
+.game-center .image img {height: 400px; z-index: 1; }
 
 .game-right {
   border: 1px solid white;
@@ -216,6 +216,23 @@ table {
 .game-right.counter-2 { background-position: -3px -972px  }
 .game-right.counter-1 { background-position: -3px -1122px  }
 .game-right.counter-0 { background-position: -3px -1122px  }
+
+/* In-game messages */
+#message-container { z-index: 2; }
+#image-container { z-index: 1; }
+.message { width: 240px; height: 240px; padding: 80px; text-align: center; color: #ffffff; }
+.message img { width: 116px; height: 116px; }
+.message * {float: none;}
+.message p {margin: 10px 0px 0px 0px; font-size: 13px; }
+.message h2 { color: #ffffff; }
+.message a { color:#bb573c; text-decoration: none; }
+.message a:hover {text-decoration:underline; }
+
+.message.error {background-color: #bb573c;}
+.message.success { background-color: #5b7608;}
+.message.timeout {background-color: #ba9e30;}
+.message.end {background-color: #2e2e2e;}
+
 
 .powerup {
     width: 100%;
@@ -604,6 +621,20 @@ h2 span {
      -moz-transform: rotateY(180deg);
           transform: rotateY(180deg);
 }
+
+@-webkit-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@-moz-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@-ms-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@-o-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+.fadeIn { -webkit-animation-name: fadeIn; -moz-animation-name: fadeIn; -ms-animation-name: fadeIn; -o-animation-name: fadeIn; animation-name: fadeIn; }
+
+@-webkit-keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+@-moz-keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+@-ms-keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+@-o-keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+.fadeOut { -webkit-animation-name: fadeOut; -moz-animation-name: fadeOut; -ms-animation-name: fadeOut; -o-animation-name: fadeOut; animation-name: fadeOut; }
 
 .back {
   position: absolute;
