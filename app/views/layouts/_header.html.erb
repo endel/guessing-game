@@ -1,19 +1,16 @@
-<div class="total">
   <div class="header">
   <div class="true">
     <% if @user.present? %>
-    <div class="top-info"><%= @user.nickname %> | Logout</div>
+    <div class="top-info"><%= @user.name %> ($ <%= @user.coins %> / <%= @user.score %> points) | Logout</div>
     <% end %>
     <div class="logo">
       <img src="/assets/logo.png" alt="Guessing Game" title="Guessing Game" />
     </div>
-
     <ul>
-      <li><a href="#" class="active">Profile</a></li>
-      <li><a href="#">In Game</a></li>
-      <li><a href="#">Ranking</a></li>
-      <li><a href="#">Shopping</a></li>
+      <li><a href="#" <%= "class=active" if params['controller'] == "profile" %>>Profile</a></li>
+      <li><a href="#" <%= "class=active" if params['controller'] == "game" %>>In Game</a></li>
+      <li><a href="#" <%= "class=active" if params['controller'] == "rankings" %>>Ranking</a></li>
+      <li><a href="#" <%= "class=active" if params['controller'] == "shop" %>>Shopping</a></li>
     </ul>
   </div>
   </div>
-</div>

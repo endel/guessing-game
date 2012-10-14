@@ -119,11 +119,14 @@ table {
 }
 
 .header ul li a:hover, .header ul li a.active {
-    color: #769b24;
+    color: #CCC;
 }
 
 .header ul li a.active {
-    background: url('/assets/bullet-menu.png') no-repeat center bottom #000000;
+    background: url('/assets/bg.png') repeat 0px 0px #292929;
+    -webkit-border-radius:20px 20px 0 0;
+    -moz-border-radius:20px 20px 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .game-left {
