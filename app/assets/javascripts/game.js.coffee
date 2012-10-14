@@ -416,7 +416,6 @@ class Game.Sequence
       else
         sounds.play 'answer_correct'
 
-
     if @last_success && success
       @combo += 1
     else
