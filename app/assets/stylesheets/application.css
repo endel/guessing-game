@@ -292,7 +292,7 @@ table {
   cursor: default;
   -moz-opacity: 0.30;
   opacity: 0.30;
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=30);
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
   background: none;
   color: #ccc;
 
