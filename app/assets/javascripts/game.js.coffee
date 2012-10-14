@@ -66,7 +66,6 @@ class window.Game
     # Fade in / rotate / show image
     $(@message_sel).addClass('fadeOut').removeClass('rotated')
 
-    $(@image_sel).parent().removeClass('rotated')
     $(@image_sel).removeClass('rotated').
       removeClass('fadeOut').
       addClass('fadeIn').
@@ -92,7 +91,7 @@ class window.Game
     message = @message_builder.build(data.message_type, $.extend(data, {
       total_score: @scorer.score
     }))
-    $(@message_sel).html(message).removeClass('fadeOut').addClass('rotated').addClass('fadeIn')
+    $(@message_sel).html(message).removeClass('fadeOut').addClass('rotated')
 
   # Answer the question
   answer: (options) ->
