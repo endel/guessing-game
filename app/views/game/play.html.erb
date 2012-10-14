@@ -5,7 +5,8 @@
       image: '#image-container',
       message: '#message-container',
       options_container: '#options',
-      countdown_container: '#countdown'
+      countdown_container: '#countdown',
+      sequence: 20
     });
     game.ask();
   });
@@ -34,6 +35,7 @@
 <div class="middle">
   <div class="true" style="padding-top: 100px;">
     <div id="score-container" class="game-left animated">
+      <span id="combo"></span>
       <span id="score">0</span>points
     </div>
     <div class="game-center">
@@ -56,8 +58,8 @@
       <a id="pass" href="#">
         <span class="counter"><%= @user.as_json[:specials]['pass'] %></span>
       </a>
+      <div id="sequence"></div>
     </div>
-    <div id="options" class="answers">
-    </div>
+    <div id="options" class="answers"></div>
   </div>
 </div>

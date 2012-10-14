@@ -19,6 +19,7 @@ class window.Game
 
     # Controllers
     @user = new Game.User(data.user)
+    @sequence = new Game.Sequence({game: this, sequence: data.sequence})
 
     @countdown = new Game.Countdown({
       game: this,
@@ -106,11 +107,13 @@ class window.Game
     target = options.target
     that = this
     message_type = null
+    success = false
 
     # Add success/error class to target, if it was set
     if target
       # Check selected answer
       if (@options.check( $(target).data('id') ))
+        success = true
         # Play "answer correct"
         sounds.play('answer_correct')
         message_type = 'success'
@@ -131,11 +134,14 @@ class window.Game
 
     @countdown.stop()
 
+
+    has_next = @sequence.next(success)
+    console.log(has_next)
     this.show_message({message_type: message_type})
 
     $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
       delay 1000, ->
-        that.update_data(data)
+        that.update_data($.extend(data, {has_next: has_next}))
 
 #
 # Game.User
@@ -202,7 +208,7 @@ class Game.Specials.Base
 
   # Update User Interface
   update_ui: ->
-    $('#' + this.name + " span").html( @game.user.special[this.name] )
+    $('#' + this.name + " #score").html( @game.user.special[this.name] )
     if (@game.user.special[this.name] <= 0)
       $('#' + this.name).addClass('disabled')
 
@@ -332,7 +338,7 @@ class Game.Scorer
         @score_tmp -= 1
       else
         @score_tmp += 1
-      $(@container + " span").html( @score_tmp )
+      $(@container + " #score").html( @score_tmp )
     else
       clearInterval @tick_interval
 
@@ -376,4 +382,37 @@ class Game.MessageBuilder
       #object.message = object.message.replace(  )
 
     @tpl(object)
+class Game.Sequence
+  constructor: (data) ->
+    @game = data.game
+    @total = data.sequence
+    @current = 1
+    @combo = 0
+
+    # Accumulate all user successes
+    @success = 0
+
+  next: (success) ->
+    if success
+      @combo += 1
+      @success += 1
+    else
+      @combo = 0
+    @current += 1
+
+    this.update_ui()
+
+    @total == @current
+
+  update_ui: ->
+    # Sequence
+    $('#sequence').html(@current + " / " + @total)
+
+    # Combo
+    if @combo > 0
+      $('#score-container').addClass('combo') if @combo == 1
+      $('#combo').html(@combo)
+    else if @combo == 0
+      $('#score-container').removeClass('combo')
+      $('#combo').html('')
 
