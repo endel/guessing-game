@@ -86,11 +86,20 @@ class window.Game
     if target
       # Check selected answer
       if (@options.check( $(target).data('id') ))
+        # Play "answer correct"
+        sounds.play('answer_correct')
+
         $(target).addClass('success')
       else
         # If selected the wrong answer, highlight the right answer
+        sounds.play('answer_incorrect')
         $(target).addClass('error')
         $(@options_sel + " [data-id="+@options.answer.id+"]").addClass('success')
+    else
+      # Timeout...
+      # Don't play when user have used 'pass' special
+      sounds.play('timeout') unless $.inArray("pass", @specials.consumed) >= 0
+
 
     @countdown.stop()
     $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
@@ -123,32 +132,33 @@ class Game.Options
 class Game.Specials
   constructor: (data) ->
     @game = data.game
+    @specials = {}
+    that = this
     this.restart()
 
-    that = this
-    $(data.container).on 'click', '#cut', ->
-      that.try_consume(Game.Specials.Cut)
-      false
+    specials = [ Game.Specials.Cut, Game.Specials.ExtraTime, Game.Specials.Pass ]
 
-    $(data.container).on 'click', '#extra_time', ->
-      that.try_consume(Game.Specials.ExtraTime)
-      false
+    for special_class in specials
+      special = new special_class(@game)
+      @specials[special.name] = special
 
-    $(data.container).on 'click', '#pass', ->
-      that.try_consume(Game.Specials.Pass)
-      false
+      # Immediatelly update user interface
+      @specials[special.name].update_ui()
 
-  try_consume: (klass) ->
-    special = new klass()
-    if @game.user.special[special.name] > 0
-      @game.user.special[special.name] -= 1
+      # Bind click event for each special
+      $(data.container + " #" + special.name).data('name', special.name)
+      $(data.container).on 'click', '#' + special.name, ->
+        that.try_consume($(this).data('name'))
+        false
 
-      # Update UI
-      if (@game.user.special[special.name] <= 0)
-        $('#' + special.name).addClass('disabled')
-        $('#' + special.name + " span").html( @game.user.special[special.name] )
-      @consumed.push(special.name)
-      special.use(@game)
+  try_consume: (special) ->
+    console.log(special)
+    if @game.user.special[special] > 0
+      @game.user.special[special] -= 1
+      @specials[special].update_ui()
+
+      @consumed.push(special)
+      @specials[special].use(@game)
 
   restart: ->
     @consumed = []
@@ -157,8 +167,15 @@ class Game.Specials
 # Common Special Class
 #
 class Game.Specials.Base
-  constructor: ->
+  constructor: (game) ->
+    @game = game
     @element = $("#" + this.name)
+
+  # Update User Interface
+  update_ui: ->
+    $('#' + this.name + " span").html( @game.user.special[this.name] )
+    if (@game.user.special[this.name] <= 0)
+      $('#' + this.name).addClass('disabled')
 
 #
 # Game.Specials.Cut
@@ -166,6 +183,8 @@ class Game.Specials.Base
 class Game.Specials.Cut extends Game.Specials.Base
   name: "cut"
   use: (game) ->
+    sounds.play('cut')
+
     # Get list of wrong answers that isn't disabled
     avaible_wrong_answers = []
     $(game.options_sel + " [data-id!='"+game.options.answer.id+"']:not(.disabled)").map (i) ->
@@ -183,6 +202,7 @@ class Game.Specials.Cut extends Game.Specials.Base
 class Game.Specials.ExtraTime extends Game.Specials.Base
   name: "extra_time"
   use: (game) ->
+    sounds.play('extra_time')
     game.countdown.counter += 11
     game.countdown.update()
 
@@ -193,9 +213,10 @@ class Game.Specials.Pass extends Game.Specials.Base
   name: "pass"
   use: (game) ->
     # Your answer is correct!
+    sounds.play('pass')
     game.answer({
       id: game.options.answer.id,
-      target: this
+      target: null
     })
 
 #
@@ -226,7 +247,7 @@ class Game.Countdown
     @elapsed_time = (new Date()) - @timer
 
   update: ->
-    $(@container).removeClass('counter-' + (@counter + 1))
+    $(@container).parent().removeClass('counter-' + (@counter + 1))
 
     if (@counter < 0)
       this.stop()
@@ -238,7 +259,7 @@ class Game.Countdown
           return @game.answer({id: wrong_answers[0], target: null})
 
     else
-      $(@container).addClass('counter-' + @counter)
+      $(@container).parent().addClass('counter-' + @counter)
       $(@container).html(@counter)
       @counter -= 1
 

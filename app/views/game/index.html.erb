@@ -4,12 +4,10 @@ $(document).ready(function(){
     class: 'selected'
   })
 });
-
-
 <% end %>
 
 <div id="start">
-<%= form_tag game_play_path, :method => :get do %>
+<%= form_tag game_play_path, :method => :get do |f| %>
   <% @matters.each do |m| %>
   <span class="checkbox" style="width: 20px">
     <label>

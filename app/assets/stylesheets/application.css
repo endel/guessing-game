@@ -199,11 +199,13 @@ table {
     color: #ffffff;
     float: left;
     font-size: 14px;
-    height: 168px;
+    height: 108px;
     padding-top: 100px;
     text-align: center;
     width: 180px;
 }
+.game-right.counter-10 {  }
+.game-right.counter-9 { background-position: -3px 350px  }
 
 .powerup {
     width: 100%;
@@ -250,7 +252,7 @@ table {
     background-color: #141517;
     text-shadow: 1px 1px 1px #000000;
     filter: dropshadow(color=#000000, offx=1, offy=1);
-    
+
     -webkit-border-radius: 20px;
        -moz-border-radius: 20px;
             border-radius: 20px;
@@ -295,7 +297,7 @@ table {
 
     text-shadow: 1px 1px 1px #9b3431;
     filter: dropshadow(color=#9b3431, offx=1, offy=1);
-    
+
     background-image:         linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
     background-image:      -o-linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
     background-image:     -ms-linear-gradient(bottom, rgb(138,60,21) 39%, rgb(191,80,25) 70%);
@@ -417,7 +419,7 @@ h2 span {
 }
 
 .header-home{
-  border-bottom: 1px solid #494949; 
+  border-bottom: 1px solid #494949;
   background: url('/assets/bg-header.jpg') repeat scroll center top transparent;
   height: 384px;
   width: 100%;
@@ -457,7 +459,6 @@ h2 span {
 .footer a:hover {
   color: #dddddd;
 }
-
 
 
 /**
@@ -558,7 +559,7 @@ h2 span {
       -ms-animation-fill-mode: both;
        -o-animation-fill-mode: both;
           animation-fill-mode: both;
-  
+
   -webkit-animation-duration: 1s;
      -moz-animation-duration: 1s;
       -ms-animation-duration: 1s;
