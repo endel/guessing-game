@@ -72,6 +72,9 @@ class GameController < ApplicationController
     # Best score is 100 points per hit
     score = ((15000*time_qty) / (params['time'].to_f / 10)) if correct
 
+    # Multiply score by combo parameter
+    score *= (params['combo'] || 0).to_i + 1
+
     @user.score += score
     @user.save
 

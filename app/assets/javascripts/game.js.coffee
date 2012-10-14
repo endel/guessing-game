@@ -133,12 +133,11 @@ class window.Game
 
     @countdown.stop()
 
-
     has_next = @sequence.next(success)
     console.log(has_next)
     this.show_message({message_type: message_type})
 
-    $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
+    $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed, combo: @sequence.combo }, (data) ->
       delay 1000, ->
         that.update_data($.extend(data, {has_next: has_next}))
 
