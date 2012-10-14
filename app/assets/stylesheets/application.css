@@ -90,19 +90,24 @@ table {
 }
 
 .logo {
-    overflow: hidden;
-    text-align: center;
-    width: 100%;
+overflow: hidden;
+text-align: center;
+width: 156px;
+margin: 12px 0px 0px 0px;
+float: left;
 }
 
 .top-info {
-    float: right;
-    width: 100%;
-    text-align: right;
-    font-size: 11px;
-    color: #dddddd;
-    margin-top: 20px;
+float: right;
+width: 100%;
+text-align: right;
+font-size: 11px;
+color: #DDD;
+margin-top: 30px;
 }
+
+.top-info a {text-decoration: none; color: #bb573c;}
+.top-info a:hover {text-decoration: underline;}
 
 .header ul {
     width: 100%;

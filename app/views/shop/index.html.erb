@@ -34,7 +34,6 @@
       for(i = 0; i < $(".special-info").length; i++){
         var price = isNaN(parseInt($($(".special-info")[i]).find(".price").text())) ? 0 : parseInt($($(".special-info")[i]).find(".price").text());
         var qtt = isNaN(parseInt($($(".special-info")[i]).find('.update_total').val())) ? 0 : parseInt($($(".special-info")[i]).find('.update_total').val());
-
         total = total + (price * qtt);
       }
 

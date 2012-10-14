@@ -14,6 +14,10 @@ class GameController < ApplicationController
 
   # GET
   def play
+    unless params[:matters].present? && params[:matters].length > 0
+      flash[:message] = 'category-required'
+      redirect_to :action => :index
+    end
     @matters = Matter.where(:id => params[:matters])
     session[:matters] = @matters.collect {|x| x.id }
   end
