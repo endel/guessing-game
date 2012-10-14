@@ -98,7 +98,7 @@ class window.Game
     message = @message_builder.build(data.message_type, $.extend(data, {
       total_score: @scorer.score
     }))
-    $(@message_sel).html(message).removeClass('fadeOut').addClass('rotated')
+    $(@message_sel).html($(message)).removeClass('fadeOut').addClass('rotated')
 
   # Answer the question
   answer: (options) ->
@@ -126,6 +126,8 @@ class window.Game
       unless $.inArray("pass", @specials.consumed) >= 0
         message_type = 'timeout'
         sounds.play('timeout')
+      else
+        message_type = 'success'
 
     @countdown.stop()
 
@@ -342,32 +344,36 @@ class Game.MessageBuilder
         type: 'error',
         image_src: '/assets/messages/error.png',
         title: 'You missed.',
-        message: '<p>Keep trying images that will appear in the next.</p>',
+        message: 'Keep trying images that will appear in the next.',
       },
       end: {
         type: 'end',
         image_src: '/assets/messages/end.png',
         title: 'His round ended.',
-        message: '<p>You got {{total_score}} points, hitting <strong>{{success}}</strong> of 20 questions. <br/><a href="/rankings/summary">Check out how your ranking.</a></p>',
+        message: 'You got {{total_score}} points, hitting {{success}} of 20 questions.',
+        link: {
+          href: '/rankings/summary',
+          title: 'Check out how your ranking.'
+        }
       },
       success: {
         type: 'success',
         image_src: '/assets/messages/success.png',
         title: "That's it!",
-        message: '<p>Try to respond even faster to gain more points walks.</p>',
+        message: 'Try to respond even faster to gain more points walks.',
       },
       timeout: {
         type: 'timeout',
         image_src: '/assets/messages/timeout.png',
         title: 'Time is up!',
-        message: '<p>Take care in the next time!</p>',
+        message: 'Take care in the next time!',
       },
     }
   build: (type, replacements) ->
     object = @types[type]
-    for replacement in replacements
-      console.log(replacement)
-      object.message = object.message.replace(  )
+    #for replacement in replacements
+      #console.log(replacement)
+      #object.message = object.message.replace(  )
 
     @tpl(object)
 

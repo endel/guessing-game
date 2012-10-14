@@ -24,7 +24,10 @@
   <div class="message back {{type}}">
     <img src="{{image_src}}" alt="{{type}}" title="{{type}}" width="116" height="116" />
     <h2>{{title}}</h2>
-    {{message}}
+    <p>{{message}}</p>
+    {{#if link}}
+      <a href="{{href}}" title="{{title}}">{{title}}</a>
+    {{/if}}
   </div>
 </script>
 

@@ -221,7 +221,7 @@ table {
 #message-container { z-index: 2; }
 #image-container { z-index: 1; }
 .message { width: 240px; height: 240px; padding: 80px; text-align: center; color: #ffffff; }
-.message img { width: 116px; height: 116px; }
+.message img { width: 116px !important; height: 116px !important; }
 .message * {float: none;}
 .message p {margin: 10px 0px 0px 0px; font-size: 13px; }
 .message h2 { color: #ffffff; }
