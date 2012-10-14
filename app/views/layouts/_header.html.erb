@@ -1,7 +1,11 @@
   <div class="header">
   <div class="true">
     <% if @user.present? %>
-    <div class="top-info"><%= @user.name %> ($ <span class="coins"><%= @user.coins %></span> / <%= @user.score %> points) | Logout</div>
+      <div class="top-info">
+        <%= @user.name %>
+        ($ <span class="coins"><%= @user.coins %></span> / <%= @user.score %> points) |
+        <%= link_to 'Logout', logout_path  %>
+      </div>
     <% end %>
     <div class="logo">
       <a href="/">
@@ -10,7 +14,7 @@
     </div>
     <ul>
       <li>
-        <a href="<%= user_profile_path %>" <%= "class=active" if params['controller'] == "profile" %>>Profile</a>
+      <a href="<%= "/user/profile/#{@user.id}" %>" <%= "class=active" if params['controller'] == "profile" %>>Profile</a>
       </li>
       <li>
         <a href="<%= game_play_path %>" <%= "class=active" if params['controller'] == "game" %>>In Game</a>

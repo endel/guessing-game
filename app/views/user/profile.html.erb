@@ -1,2 +1,7 @@
-<h1>User#profile</h1>
-<p>Find me in app/views/user/profile.html.erb</p>
+<h2><%= @user.name %> <span><%= @user.nickname %></span></h2>
+<%= image_tag @user.image %>
+<p>
+  <!-- <strong>Total score: </strong> <%= @user.score %> <br /> -->
+  <strong>Weekly score: </strong> <%= @user.rankings.last.total_score %> <br />
+  <strong>Coins: </strong> <%= @user.coins %>
+</p>

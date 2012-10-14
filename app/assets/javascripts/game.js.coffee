@@ -14,13 +14,16 @@ class window.Game
     @options = null
     @last_time = null
     @image_sel = data.image
+    @message_sel = data.message
     @options_sel = data.options_container
 
     # Controllers
     @user = new Game.User(data.user)
+    @sequence = new Game.Sequence({game: this, sequence: data.sequence})
 
     @countdown = new Game.Countdown({
       game: this,
+      timer: data.timer,
       container: data.countdown_container
     })
 
@@ -33,6 +36,8 @@ class window.Game
     @scorer = new Game.Scorer({
       container: '#score-container'
     })
+
+    @message_builder = new Game.MessageBuilder()
 
     # Bind onclick
     $(@options_sel).on 'click', 'a', (evt) ->
@@ -60,52 +65,82 @@ class window.Game
     image_tpl = Handlebars.compile($("#image_tpl").html())
     option_tpl = Handlebars.compile($("#option_tpl").html())
 
-    $(@image_sel).html( image_tpl( @options.answer ) )
+    # Fade in / rotate / show image
+    $(@message_sel).addClass('fadeOut').removeClass('rotated')
+
+    $(@image_sel).removeClass('rotated').
+      removeClass('fadeOut').
+      addClass('fadeIn').
+      html( image_tpl( @options.answer ) )
 
     $(@options_sel).html('')
     for option in @options.list
-      $(@options_sel).append(option_tpl(option))
+      $(@options_sel).prepend(option_tpl(option))
 
     @countdown.start()
 
-  # Update score UI
-  update_score: (data) ->
+  update_data: (data) ->
+    that = this
+
+    # Update score UI
+    @scorer.update( parseInt(data.score) )
+
     # Preload next image
+    # Show options when image is loaded
     img = new Image()
+    $(img).load ->
+      that.build_answers.call(that, data)
     img.src = data.answer.url
 
-    @scorer.update( parseInt(data.score) )
+  # Show message and update score UI
+  show_message: (data) ->
+
+    # Fade out / rotate / show message
+    $(@image_sel).addClass('rotated').addClass('fadeOut')
+    message = @message_builder.build(data.message_type, $.extend(data, {
+      total_score: @scorer.score
+    }))
+    $(@message_sel).html($(message)).removeClass('fadeOut').addClass('rotated')
 
   # Answer the question
   answer: (options) ->
     id = options.id
     target = options.target
     that = this
+    message_type = null
+    success = false
 
     # Add success/error class to target, if it was set
     if target
       # Check selected answer
       if (@options.check( $(target).data('id') ))
-        # Play "answer correct"
-        sounds.play('answer_correct')
-
+        success = true
+        message_type = 'success'
         $(target).addClass('success')
       else
         # If selected the wrong answer, highlight the right answer
         sounds.play('answer_incorrect')
+        message_type = 'error'
         $(target).addClass('error')
         $(@options_sel + " [data-id="+@options.answer.id+"]").addClass('success')
     else
-      # Timeout...
-      # Don't play when user have used 'pass' special
-      sounds.play('timeout') unless $.inArray("pass", @specials.consumed) >= 0
-
+      # Timeout... (only if 'pass' special isn't used)
+      unless $.inArray("pass", @specials.consumed) >= 0
+        message_type = 'timeout'
+        sounds.play('timeout')
+      else
+        message_type = 'success'
 
     @countdown.stop()
+
+
+    has_next = @sequence.next(success)
+    console.log(has_next)
+    this.show_message({message_type: message_type})
+
     $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
-      that.update_score(data)
       delay 1000, ->
-        that.build_answers.call(that, data)
+        that.update_data($.extend(data, {has_next: has_next}))
 
 #
 # Game.User
@@ -172,7 +207,7 @@ class Game.Specials.Base
 
   # Update User Interface
   update_ui: ->
-    $('#' + this.name + " span").html( @game.user.special[this.name] )
+    $('#' + this.name + " .counter").html( @game.user.special[this.name] )
     if (@game.user.special[this.name] <= 0)
       $('#' + this.name).addClass('disabled')
 
@@ -203,6 +238,7 @@ class Game.Specials.ExtraTime extends Game.Specials.Base
   use: (game) ->
     sounds.play('extra_time')
     game.countdown.counter += 11
+    game.countdown.animate()
     game.countdown.update()
 
 #
@@ -223,6 +259,7 @@ class Game.Specials.Pass extends Game.Specials.Base
 #
 class Game.Countdown
   constructor: (data) ->
+    @default_timer = data.timer
     @game = data.game
     @container = data.container
     @interval = null
@@ -232,7 +269,7 @@ class Game.Countdown
 
   start: ->
     @paused = false
-    @counter = 10
+    @counter = @default_timer
     @timer = new Date()
     that = this
     this.update()
@@ -246,7 +283,12 @@ class Game.Countdown
     @elapsed_time = (new Date()) - @timer
 
   update: ->
-    $(@container).parent().removeClass('counter-' + (@counter + 1))
+    $(@container).parent()[0].className = $(@container).parent()[0].className.replace(/\bcounter-.*?\b/g, '')
+    $(@container).parent().removeClass('counter-*')
+
+    # Blink when counter gets into 3
+    if (@counter == 2)
+      this.animate('shake')
 
     if (@counter < 0)
       this.stop()
@@ -261,6 +303,14 @@ class Game.Countdown
       $(@container).parent().addClass('counter-' + @counter)
       $(@container).html(@counter)
       @counter -= 1
+
+  animate: (kind) ->
+    kind = 'bounceIn' unless kind
+    that = this
+    $(@container).parent().addClass('animated').addClass(kind)
+    delay 500, ->
+      $(that.container).parent().removeClass('animated').removeClass(kind)
+
 
 class Game.Transitioner
   constructor: (game) ->
@@ -302,6 +352,94 @@ class Game.Scorer
         @score_tmp -= 1
       else
         @score_tmp += 1
-      $(@container + " span").html( @score_tmp )
+      $(@container + " #score").html( @score_tmp )
     else
       clearInterval @tick_interval
+
+class Game.MessageBuilder
+  constructor: ->
+    @tpl = Handlebars.compile($('#message').html())
+    @types = {
+      error: {
+        type: 'error',
+        image_src: '/assets/messages/error.png',
+        title: 'You missed.',
+        message: 'Keep trying images that will appear in the next.',
+      },
+      end: {
+        type: 'end',
+        image_src: '/assets/messages/end.png',
+        title: 'His round ended.',
+        message: 'You got {{total_score}} points, hitting {{success}} of 20 questions.',
+        link: {
+          href: '/rankings/summary',
+          title: 'Check out how your ranking.'
+        }
+      },
+      success: {
+        type: 'success',
+        image_src: '/assets/messages/success.png',
+        title: "That's it!",
+        message: 'Try to respond even faster to gain more points walks.',
+      },
+      timeout: {
+        type: 'timeout',
+        image_src: '/assets/messages/timeout.png',
+        title: 'Time is up!',
+        message: 'Take care in the next time!',
+      },
+    }
+  build: (type, replacements) ->
+    object = @types[type]
+    #for replacement in replacements
+      #console.log(replacement)
+      #object.message = object.message.replace(  )
+
+    @tpl(object)
+
+class Game.Sequence
+  constructor: (data) ->
+    @game = data.game
+    @total = data.sequence
+    @current = 1
+    @combo = 0
+    @last_success = false
+
+    # Accumulate all user successes
+    @success = 0
+    this.update_ui()
+
+  next: (success) ->
+    if success
+      @success += 1
+
+      # Play "combo" or "answer correct"
+      if @last_success
+        sounds.play 'combo'
+      else
+        sounds.play 'answer_correct'
+
+    if @last_success && success
+      @combo += 1
+    else
+      @combo = 0
+    @current += 1
+
+    @last_success = success
+
+    this.update_ui()
+
+    @total == @current
+
+  update_ui: ->
+    # Sequence
+    $('#sequence').html(@current + " / " + @total)
+
+    # Combo
+    if @combo > 0
+      $('#score-container').addClass('combo') if @combo == 1
+      $('#combo').html(@combo)
+    else if @combo == 0
+      $('#score-container').removeClass('combo')
+      $('#combo').html('')
+

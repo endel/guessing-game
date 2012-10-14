@@ -14,6 +14,10 @@ class GameController < ApplicationController
 
   # GET
   def play
+    unless params[:matters].present? && params[:matters].length > 0
+      flash[:message] = 'category-required'
+      redirect_to :action => :index
+    end
     @matters = Matter.where(:id => params[:matters])
     session[:matters] = @matters.collect {|x| x.id }
   end
@@ -49,22 +53,24 @@ class GameController < ApplicationController
     # Decrease each special used on this answer
     time_qty = 1
     if params['specials']
+      puts "specials -> #{params['specials'].inspect}"
       specials = {}
       params['specials'].each do |special|
         time_qty += 1 if special == "extra_time"
 
         special_id = SPECIAL.const_get(special.upcase)
+        puts "special_id.inspect => #{special_id.inspect}"
         specials[ special_id ] = @user.user_specials.where(:special_id => special_id).first unless specials[ special_id ]
         specials[ special_id ].qtt -= 1
       end
-      specials.each_value {|special| special.save }
+      specials.each_value {|special| puts "saved? => #{special.save.inspect}" }
     end
 
     # Is the answer correct?
     correct = (session['answer_id'].to_s == params['answer_id'])
 
     # Best score is 100 points per hit
-    score = ((10000*time_qty) / (params['time'].to_f / 10)) if correct
+    score = ((15000*time_qty) / (params['time'].to_f / 10)) if correct
 
     @user.score += score
     @user.save

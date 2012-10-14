@@ -14,6 +14,10 @@ class UserController < ApplicationController
     @profile = User.find(params[:id])
   end
 
+  def profile
+    @user = User.find(params[:id] || @user.id)
+  end
+
   def search
     q = "%#{params['search']}%"
     @profiles = User.where("name LIKE ? OR nickname LIKE ?", q, q)

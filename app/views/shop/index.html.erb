@@ -2,41 +2,41 @@
   $(function (){
     $('.alert').hide();
     $('.buy').prop("disabled", true);
-    
-    $(".buy_special").validate({
-    	errorPlacement: function(error, element) { return false; },
 
-    	submitHandler: function() {
-    		$('span#loading').show();
+    $(".buy_special").validate({
+      errorPlacement: function(error, element) { return false; },
+
+      submitHandler: function() {
+        $('span#loading').show();
 
         $.ajax({
-            url: "<%= shop_buy_path %>.json",
-            cache: false,
-            dataType: 'json',
-            type: 'POST',
-            data: $(".buy_special").serialize(),
-            success: function (data, success) {
-                $('.alert').text( data.message).show();
-                $(".buy_special")[0].reset();
-                $("#total .cart").text("0");
-                $("#total .coins").text(data.coins);
-                $(".header .coins").text(data.coins);
-            }
+          url: "<%= shop_buy_path %>.json",
+          cache: false,
+          dataType: 'json',
+          type: 'POST',
+          data: $(".buy_special").serialize(),
+          success: function (data, success) {
+            $('.alert').text( data.message).show();
+            $(".buy_special")[0].reset();
+            $("#total .cart").text("0");
+            $("#total .coins").text(data.coins);
+            $(".header .coins").text(data.coins);
+          }
         });
-  		
-    	}
+
+      }
     });
 
-    $(".update_total").change(function(){
+    $(".update_total").keyup(function(){
+      console.log("aisdhiasud")
       var total = 0;
 
       for(i = 0; i < $(".special-info").length; i++){
         var price = isNaN(parseInt($($(".special-info")[i]).find(".price").text())) ? 0 : parseInt($($(".special-info")[i]).find(".price").text());
         var qtt = isNaN(parseInt($($(".special-info")[i]).find('.update_total').val())) ? 0 : parseInt($($(".special-info")[i]).find('.update_total').val());
-
         total = total + (price * qtt);
       }
-      
+
       if(total > <%= @user.coins.to_i %> && total != 0){
         $("#total .cart").css("color", "#AB3D39");
         $('.buy').prop("disabled", true);
@@ -47,7 +47,6 @@
       // Update the total
       $("#total .cart").text(total);
     });
-    
   });
 <% end %>
 <div class="alert">
@@ -76,6 +75,6 @@ description = { 1 => "Add 10 seconds to your answer time giving you more score."
     <%= f.input "#{special.id}", :required => false, :label => false, :input_html => { :class => "numeric update_total" } %>
   </div>
   <% end %>
-  <%= f.submit "Buy", :class => "buy" %>  
+  <%= f.submit "Buy", :class => "buy" %>
 <% end %>
 </div>
