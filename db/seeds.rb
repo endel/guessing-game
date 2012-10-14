@@ -66,9 +66,7 @@ matters = Matter.create([
 ])
 
 Ranking.create([
-  { :user_id => user.id, :score => 120, :matter_id => 1 },
-  { :user_id => user.id, :score => 150, :matter_id => 1 },
-  { :user_id => user.id, :score => 30, :matter_id => 1 },
+  { :user_id => user.id, :total_score => 120, :matter_id => 1 },
 ])
 
 #'Old English Sheepdog'

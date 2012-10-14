@@ -20,44 +20,65 @@ class GameController < ApplicationController
 
   # GET
   def ask
-    # Time is up! No scoring and get another question.
-    if params['timeout']
+    category_matter_id = {}
+    category_ids = Matter.where(:id => session[:matters]).collect do |x|
+      categories = x.categories.split(",")
+      categories.each {|category_id| category_matter_id[category_id.to_i] = x.id }
+      categories
     end
 
-    all_categories = Matter.where(:id => session[:matters]).collect {|x| x.categories.split(",") }
-
-    @category = Category.where(:id => all_categories).order(db_rand_func).first
+    @category = Category.where(:id => category_ids).order(db_rand_func).first
     @options = @category.pictures.order(db_rand_func).limit(6).to_a
-    @answer = @options.first
-    session['answer_id'] = @answer.id
+    @answer = @options.first.as_json.merge(:matter_id => category_matter_id[ @category.id ])
+    session['answer_id'] = @answer[:id]
+
+    puts params.inspect
 
     #
     # TODO: encode with JSON for security
     #
     # require "base64"
     # Base64.encode64({:picture => @picture, :options => @options.collect {|x| x.name }}.to_json)
-    render :json => {:answer => @answer, :options => @options.as_json(:tiny => true)}
+    render :json => {:score => params[:score] || 0, :user => @user.as_json, :answer => @answer, :options => @options.as_json(:tiny => true)}
   end
 
   # POST
   def answer
-    if session['answer_id'].to_s == params['answer_id']
-      # Time in miliseconds
-      total_score = (10000 - params['time'].to_i) / 100
-      @user.score +=  total_score# Best score is 100 points per hit
-      @user.save
-      
-      ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
-      if ranking.nil?
-        @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => total_score)
-      else
-        ranking.score += total_score
-        ranking.save
+    score = 0
+
+    # Decrease each special used on this answer
+    time_qty = 1
+    if params['specials']
+      specials = {}
+      params['specials'].each do |special|
+        time_qty += 1 if special == "extra_time"
+
+        special_id = SPECIAL.const_get(special.upcase)
+        specials[ special_id ] = @user.user_specials.where(:special_id => special_id).first unless specials[ special_id ]
+        specials[ special_id ].qtt -= 1
       end
-        
+      specials.each_value {|special| special.save }
     end
 
-    redirect_to :action => :ask
+    # Is the answer correct?
+    correct = (session['answer_id'].to_s == params['answer_id'])
+
+    # Best score is 100 points per hit
+    score = ((10000*time_qty) / (params['time'].to_f / 10)) if correct
+
+    @user.score += score
+    @user.save
+
+    ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
+    if ranking.nil?
+      @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => score)
+    else
+      ranking.score += score
+      ranking.save
+    end
+
+
+    redirect_to :action => :ask, :score => score
   end
 
   protected

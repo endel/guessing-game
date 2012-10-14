@@ -18,19 +18,26 @@ class window.Game
 
     # Controllers
     @user = new Game.User(data.user)
+
     @countdown = new Game.Countdown({
       game: this,
       container: data.countdown_container
     })
+
     @specials = new Game.Specials({
       game: this,
       container: "#specials"
     })
 
+    @transitioner = new Game.Transitioner()
+    @scorer = new Game.Scorer({
+      container: '#score-container'
+    })
+
     # Bind onclick
     $(@options_sel).on 'click', 'a', (evt) ->
-      if (that.countdown.paused)
-        return
+      if (that.countdown.paused || $(this).hasClass('disabled'))
+        return false
 
       that.answer({
         id: $(this).data('id'),
@@ -47,6 +54,7 @@ class window.Game
 
   # Build answer list
   build_answers: (data) ->
+    @specials.restart()
     @options = new Game.Options(data)
 
     image_tpl = Handlebars.compile($("#image_tpl").html())
@@ -60,22 +68,33 @@ class window.Game
 
     @countdown.start()
 
+  # Update score UI
+  update_score: (data) ->
+    # Preload next image
+    img = new Image()
+    img.src = data.answer.url
+
+    @scorer.update( parseInt(data.score) )
+
   # Answer the question
   answer: (options) ->
     id = options.id
     target = options.target
     that = this
 
-    # Check selected answer
-    if (@options.check( $(target).data('id') ))
-      $(target).addClass('success')
-    else
-      # If selected the wrong answer, highlight the right answer
-      $(target).addClass('error')
-      $(@options_sel + " [data-id="+@options.answer.id+"]").addClass('success')
+    # Add success/error class to target, if it was set
+    if target
+      # Check selected answer
+      if (@options.check( $(target).data('id') ))
+        $(target).addClass('success')
+      else
+        # If selected the wrong answer, highlight the right answer
+        $(target).addClass('error')
+        $(@options_sel + " [data-id="+@options.answer.id+"]").addClass('success')
 
     @countdown.stop()
-    $.post '/game/answer', { time: @countdown.elapsed_time, answer: id }, (data) ->
+    $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
+      that.update_score(data)
       delay 1000, ->
         that.build_answers.call(that, data)
 
@@ -104,7 +123,7 @@ class Game.Options
 class Game.Specials
   constructor: (data) ->
     @game = data.game
-    @consumed = []
+    this.restart()
 
     that = this
     $(data.container).on 'click', '#cut', ->
@@ -123,7 +142,13 @@ class Game.Specials
     special = new klass()
     if @game.user.special[special.name] > 0
       @game.user.special[special.name] -= 1
-      @consumed.push special.use(@game)
+      # Update UI
+      $('#' + special.name + " span").html( @game.user.special[special.name] )
+      @consumed.push(special.name)
+      special.use(@game)
+
+  restart: ->
+    @consumed = []
 
 #
 # Common Special Class
@@ -146,10 +171,8 @@ class Game.Specials.Cut extends Game.Specials.Base
     # Shuffle wrong answers list
     avaible_wrong_answers.shuffle()
 
-    $(game.options_sel + " [data-id="+avaible_wrong_answers.shift()+"]").addClass('disabled')
-    $(game.options_sel + " [data-id="+avaible_wrong_answers.shift()+"]").addClass('disabled')
-
-    this.name
+    $(game.options_sel + " [data-id="+avaible_wrong_answers.shift()+"]").addClass('disabled') # .parent().unbind('click')
+    $(game.options_sel + " [data-id="+avaible_wrong_answers.shift()+"]").addClass('disabled') # .parent().unbind('click')
 
 #
 # Game.Specials.ExtraTime
@@ -157,7 +180,8 @@ class Game.Specials.Cut extends Game.Specials.Base
 class Game.Specials.ExtraTime extends Game.Specials.Base
   name: "extra_time"
   use: (game) ->
-    this.name
+    game.countdown.counter += 11
+    game.countdown.update()
 
 #
 # Game.Specials.Pass
@@ -165,7 +189,11 @@ class Game.Specials.ExtraTime extends Game.Specials.Base
 class Game.Specials.Pass extends Game.Specials.Base
   name: "pass"
   use: (game) ->
-    this.name
+    # Your answer is correct!
+    game.answer({
+      id: game.options.answer.id,
+      target: this
+    })
 
 #
 # Game.Specials.Countdown
@@ -182,6 +210,7 @@ class Game.Countdown
   start: ->
     @paused = false
     @counter = 10
+    @timer = new Date()
     that = this
     this.update()
 
@@ -194,20 +223,63 @@ class Game.Countdown
     @elapsed_time = (new Date()) - @timer
 
   update: ->
-    @timer = new Date()
     $(@container).removeClass('counter-' + (@counter + 1))
 
     if (@counter < 0)
       this.stop()
-      @game.ask()
+
+      # Get first wrong answer
+      wrong_answers = []
+      for option in @game.options.list
+        if option.id != @game.options.answer.id
+          return @game.answer({id: wrong_answers[0], target: null})
+
     else
       $(@container).addClass('counter-' + @counter)
       $(@container).html(@counter)
       @counter -= 1
 
+class Game.Transitioner
+  constructor: (game) ->
+    @game = game
+
 #
 # Game.Scorer
 #
 class Game.Scorer
-  constructor: (countdown) ->
-    @countdown = countdown
+  constructor: (data) ->
+    @score = 0
+    @questions = 0
+    @container = data.container
+
+    # Ticks
+    @tick_interval = null
+    @score_tmp = 0
+    @backwards = false
+  update: (add_score) ->
+    console.log("score: ", add_score)
+    @questions += 1
+    @score_tmp = @score
+    @score += add_score
+    @backwards = (add_score < 0)
+
+    if add_score != 0
+      # Keep ticking +1 until it shows the actual score
+      that = this
+      @tick_interval = interval 1, ->
+        that.quick_tick()
+
+      # Bounce effect
+      $(@container).addClass('bounceIn')
+      delay 2000, ->
+        $("#score-container").removeClass('bounceIn')
+
+  quick_tick: ->
+    if (@score_tmp != @score)
+      if @backwards
+        @score_tmp -= 1
+      else
+        @score_tmp += 1
+      $(@container + " span").html( @score_tmp )
+    else
+      clearInterval @tick_interval
