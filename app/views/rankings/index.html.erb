@@ -1,6 +1,6 @@
 <div id="ranking" class="true">
-<%= form_tag("ranking") do %>
-  <%= text_field_tag "user", "", :placeholder => "Search people" %>
+<%= form_tag(search_user_path, :method => 'get') do %>
+  <%= text_field_tag "search", "", :placeholder => "Search people" %>
   <%= submit_tag "Search", :class => "search" %>
 <% end %>
 
