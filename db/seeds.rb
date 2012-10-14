@@ -8,6 +8,15 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+
+Special.destroy_all
+specials = Special.create([
+  {:identifier => "extra_time", :name => "Extra time", :price => 29.0},
+  {:identifier => "cut", :name => "Annihilate an option", :price => 55.0},
+  {:identifier => "pass", :name => "Jump the picture", :price => 50.0}
+  #{:id => "extra_time", :name => "Tip", :price => 80.0},
+])
+
 Authorization.destroy_all
 User.destroy_all
 User.create([
@@ -45,19 +54,6 @@ cachorros.pictures.create([
   {:name => 'Black and Tan Toy Terrier', :url => 'http://upload.wikimedia.org/wikipedia/commons/f/f5/English_Toy_Terrier_600_01.jpg' },
   {:name => 'Spitz dos Visigodos', :url => 'http://upload.wikimedia.org/wikipedia/commons/6/68/SwedishVallhundAgility_wb.jpg' },
   {:name => 'Pastor belga', :url => 'http://upload.wikimedia.org/wikipedia/commons/9/96/S.r.Ch.CEPPB.CH.E.Fredy_de_Belliamici%2CA.5a.cabeza.jpg' }
-])
-
-specials = Special.create([
-  {:identifier => "extra_time", :name => "Extra time", :price => 29.0},
-  {:identifier => "cut", :name => "Annihilate an option", :price => 55.0},
-  {:identifier => "pass", :name => "Jump the picture", :price => 50.0}
-  #{:id => "extra_time", :name => "Tip", :price => 80.0},
-])
-
-user.user_specials.create([
-  {:special_id => Special.find_by_identifier('extra_time').id, :qtt => 10},
-  {:special_id => Special.find_by_identifier('cut').id, :qtt => 10},
-  {:special_id => Special.find_by_identifier('pass').id, :qtt => 10}
 ])
 
 matters = Matter.create([
