@@ -77,14 +77,21 @@ class window.Game
 
     @countdown.start()
 
-  # Show message and update score UI
-  show_message: (data) ->
-    # Preload next image
-    img = new Image()
-    img.src = data.answer.url
+  update_data: (data) ->
+    that = this
 
     # Update score UI
     @scorer.update( parseInt(data.score) )
+
+    # Preload next image
+    # Show options when image is loaded
+    img = new Image()
+    $(img).load ->
+      that.build_answers.call(that, data)
+    img.src = data.answer.url
+
+  # Show message and update score UI
+  show_message: (data) ->
 
     # Fade out / rotate / show message
     $(@image_sel).addClass('rotated').addClass('fadeOut')
@@ -121,11 +128,12 @@ class window.Game
         sounds.play('timeout')
 
     @countdown.stop()
+
+    this.show_message({message_type: message_type})
+
     $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed }, (data) ->
-      data.message_type = message_type
-      that.show_message(data)
       delay 1000, ->
-        that.build_answers.call(that, data)
+        that.update_data(data)
 
 #
 # Game.User
