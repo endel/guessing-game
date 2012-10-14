@@ -17,3 +17,80 @@
 }
 
 .checkbox input { display: none; }
+
+.category-head h1{font-size: 50px;
+  text-align: center;
+  margin: 0px;
+  padding: 50px 0 0px;}
+
+
+.category-head h2 {
+  text-align: center;
+  padding: 10px 0 40px;
+}
+
+.category-play{padding: 60px 0px 80px;width: 100%; float: left;overflow: hidden;}
+
+.start{
+width: 200px;
+text-align: center;
+margin-top: 22px;
+margin: 0px auto;
+font-size: 30px;
+cursor: pointer;
+color: #ffffff;
+display: block;
+background-color: #ab3d39;
+border: 1px solid #791009;
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+border-radius: 20px;
+padding: 30px 30px 30px 30px;
+text-shadow: 1px 1px 1px #555555;
+filter: dropshadow(color=#555555, offx=1, offy=1);
+-webkit-box-shadow: 0px 23px 13px -21px #000;
+-moz-box-shadow: 0px 23px 13px -21px #000;
+box-shadow: 0px 23px 13px -21px #000;
+}
+.start:hover{background-color: #c0504c;text-decoration: none!important;}
+.start:active{-webkit-box-shadow: 0 2px 2px 2px #500e0a inset;
+-moz-box-shadow: 0 2px 2px 2px #500e0a inset;
+box-shadow: 0 2px 2px 2px #500e0a inset;
+background-color: #731610;
+border: 1px solid #500e0a;
+color:#ffffff; font-size:30px; text-decoration: none;
+}
+
+.category-body span{
+width: 200px;
+text-align: center;
+float: left;
+margin: 20px 45px;
+font-size: 20px;
+cursor: pointer;
+color: #ffffff;
+display: block;
+background-color: #555555;
+border: 1px solid #393939;
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+border-radius: 20px;
+padding: 20px;
+text-shadow: 1px 1px 1px #555555;
+filter: dropshadow(color=#555555, offx=1, offy=1);
+-webkit-box-shadow: 0px 23px 13px -21px #000;
+-moz-box-shadow: 0px 23px 13px -21px #000;
+box-shadow: 0px 23px 13px -21px #000;
+}
+.category-body span:hover{
+background-color: #373737;
+text-decoration: none!important;}
+.category-body span:active, .category-body span.selected{
+-webkit-box-shadow: 0 2px 2px 2px #121212 inset;
+-moz-box-shadow: 0 2px 2px 2px #121212 inset;
+box-shadow: 0 2px 2px 2px #121212 inset;
+background-color: #212121;
+border: 1px solid #050505;
+color:#ffffff;
+text-decoration: none;
+}
