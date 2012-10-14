@@ -33,7 +33,6 @@
     </div>
     <div id="specials" class="powerup">
       <a id="cut" href="#" style="margin-left: 400px;">
-        <img src="/assets/cut-off.png" alt="Remove 2 wrong answers" title="Two wrong options will vanish"/>
         <span class="counter"><%= @user.as_json[:specials]['cut'] %></span>
       </a>
       <!--
@@ -42,11 +41,9 @@
       </a>
       -->
       <a id="pass" href="#">
-        <img src="/assets/next-on.png" alt="Go to next question" title="Go to next question"/>
         <span class="counter"><%= @user.as_json[:specials]['pass'] %></span>
       </a>
       <a id="extra_time" href="#">
-        <img src="/assets/time-off.png" alt="Make the time pass more slowly" title="Make the time pass more slowly"/>
         <span class="counter"><%= @user.as_json[:specials]['extra_time'] %></span>
       </a>
     </div>

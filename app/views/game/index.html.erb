@@ -11,8 +11,8 @@ $(document).ready(function(){
 <div id="start">
 <%= form_tag game_play_path, :method => :get do %>
   <% @matters.each do |m| %>
-  <span class="checkbox">
-    <%= check_box_tag "matters[]", m.id %>
+  <span class="checkbox">	  	
+    <%= check_box_tag "matters[]", m.id %>	  	
     <%= m.name %>
   </span>
   <% end %>

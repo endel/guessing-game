@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   # Load author context
   #
   def load_context!
-    #session[:user_id] = User.first.id if Rails.env.development?
+    session[:user_id] = User.first.id if Rails.env.development?
     return unless session[:user_id]
 
     @user = User.find(session[:user_id])
@@ -18,4 +18,10 @@ class ApplicationController < ActionController::Base
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
+end
+
+module SPECIAL
+  CUT = Special.find_by_identifier("cut").id
+  PASS = Special.find_by_identifier("pass").id
+  EXTRA_TIME = Special.find_by_identifier("extra_time").id
 end

@@ -142,8 +142,11 @@ class Game.Specials
     special = new klass()
     if @game.user.special[special.name] > 0
       @game.user.special[special.name] -= 1
+
       # Update UI
-      $('#' + special.name + " span").html( @game.user.special[special.name] )
+      if (@game.user.special[special.name] <= 0)
+        $('#' + special.name).addClass('disabled')
+        $('#' + special.name + " span").html( @game.user.special[special.name] )
       @consumed.push(special.name)
       special.use(@game)
 
