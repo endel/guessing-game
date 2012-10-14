@@ -55,9 +55,9 @@ specials = Special.create([
 ])
 
 user.user_specials.create([
-  {:special_id => Special.find_by_identifier('extra_time').id, :qtt => 2},
-  {:special_id => Special.find_by_identifier('cut').id, :qtt => 2},
-  {:special_id => Special.find_by_identifier('pass').id, :qtt => 2}
+  {:special_id => Special.find_by_identifier('extra_time').id, :qtt => 10},
+  {:special_id => Special.find_by_identifier('cut').id, :qtt => 10},
+  {:special_id => Special.find_by_identifier('pass').id, :qtt => 10}
 ])
 
 matters = Matter.create([

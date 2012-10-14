@@ -57,11 +57,10 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
   add_index "pictures", ["category_id"], :name => "index_pictures_on_category_id"
 
   create_table "rankings", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "score"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "matter_id"
+    t.integer "user_id"
+    t.integer "total_score"
+    t.date    "week_date"
+    t.integer "matter_id"
   end
 
   add_index "rankings", ["user_id"], :name => "index_rankings_on_user_id"
@@ -93,9 +92,9 @@ ActiveRecord::Schema.define(:version => 20121013163733) do
     t.integer  "score",      :default => 0
     t.string   "locale"
     t.integer  "timezone"
-    t.float    "coins",      :default => 0.0
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.integer  "coins",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.string   "country"
   end
 

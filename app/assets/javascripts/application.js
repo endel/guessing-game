@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //
 //= require handlebars
+//= require soundmanager
 //
 //= require_tree .
 
