@@ -139,7 +139,7 @@ table {
     padding-top: 100px;
     text-align: center;
     width: 180px;
-    margin-left: 180px;
+    margin-left: 136px;
 }
 
 .game-left span {
@@ -164,29 +164,30 @@ table {
     width: 560px;
     position: relative;
     height: 400px;
-    margin: 0px -160px;
+    margin: 0px -116px;
 }
 
 .game-center .mask {
     position: absolute;
-    left: 0;
+    left: 20px;
     top: -95px;
     z-index: 3;
 }
 
 .game-center .image {
-    height: 300px;
-    left: 140px;
+    left: 101px;
+    top: -63px;
     overflow: hidden;
     position: absolute;
-    top: 39px;
-    width: 300px;
+    width: 400px;
+    height: 400px;
     z-index: 2;
 }
+.game-center .image img{height: 400px;}
 
 .game-right {
     margin-top: 134px;
-    margin-left: 16px;
+    margin-left: 38px;
     background: url('/assets/bg-gameright.png') no-repeat scroll -3px 68px transparent;
     color: #FFFFFF;
     float: left;
@@ -207,13 +208,21 @@ table {
 }
 
 .powerup a {
-    text-decoration: none;
-    color: #777777;
-    float: left;
-    display: block;
-    margin: 10px;
-    width: 33px;
+  text-decoration: none;
+  color: #777777;
+  float: left;
+  display: block;
+  margin: 10px;
+  width: 68px;
+  height: 68px;
+  position: relative;
 }
+.powerup a span { display: block; position: absolute; top: 7px; left: 7px; font-size: 10px; color: #999; text-align:center;height: 15px; width: 15px; }
+.powerup a:hover { background-position: 0 -77px; }
+.powerup a.disabled { background-position:  0 -157px; }
+.powerup a#cut { background-image: url(/assets/specials/cut-icon.png); }
+.powerup a#pass { background-image: url(/assets/specials/next-icon.png); }
+.powerup a#extra_time { background-image: url(/assets/specials/time-icon.png); }
 
 .answers {
     width: 100%;
@@ -360,6 +369,7 @@ h2 span{color: #f0cfa3;}
 .footer{width: 100%; text-align: center; padding: 10px 0px; background-color: #000000; font-size: 11px; color: #999999;}
 .footer a{text-decoration: none; color: #efefef;}
 .footer a:hover{color: ##dddddd;}
+
 
 
 /**

@@ -71,12 +71,11 @@ class GameController < ApplicationController
 
     ranking = @user.rankings.where("matter_id = ? AND week_date = ?", params[:matter_id], Time.now.at_beginning_of_week).first
     if ranking.nil?
-      @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :score => score)
+      @user.rankings.create(:matter_id => params[:matter_id], :week_date => Time.now.at_beginning_of_week, :total_score => score)
     else
       ranking.score += score
       ranking.save
     end
-
 
     redirect_to :action => :ask, :score => score
   end
