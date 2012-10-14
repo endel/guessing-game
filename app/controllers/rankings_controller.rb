@@ -1,5 +1,8 @@
 class RankingsController < ApplicationController
   
+  def index
+  end
+  
   def weekly
     @ranking = Ranking.all_matter_weekly(Time.now.at_beginning_of_week.strftime('%Y-%m-%d'))   
     

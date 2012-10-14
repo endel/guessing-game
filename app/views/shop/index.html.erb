@@ -1,6 +1,6 @@
 <%= javascript_tag do %>
   $(function (){
-    
+    $('.alert').hide();
     $('.buy').prop("disabled", true);
     
     $(".buy_special").validate({
@@ -16,7 +16,7 @@
             type: 'POST',
             data: $(".buy_special").serialize(),
             success: function (data, success) {
-                alert( data.message );
+                $('.alert').text( data.message).show();
                 $(".buy_special")[0].reset();
                 $("#total .cart").text("0");
                 $("#total .coins").text(data.coins);
@@ -50,6 +50,8 @@
     
   });
 <% end %>
+<div class="alert">
+</div>
 <div id="specials" class="true">
 <div id="total">
   <h1>
@@ -71,7 +73,7 @@ description = { 1 => "Add 10 seconds to your answer time giving you more score."
     <p>
       <%= description[special.id] %>
     </p>
-    <%= f.input "#{special.id}", :required => false, :label => false, :input_html => { :class => "update_total" } %>
+    <%= f.input "#{special.id}", :required => false, :label => false, :input_html => { :class => "numeric update_total" } %>
   </div>
   <% end %>
   <%= f.submit "Buy", :class => "buy" %>  
