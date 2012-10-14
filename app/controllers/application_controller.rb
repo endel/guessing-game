@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_context!
 
   module SPECIAL
-    CUT = (x = Special.find_by_identifier("cut") && c.id)
+    CUT = (x = Special.find_by_identifier("cut") && x.id)
     PASS = (x = Special.find_by_identifier("pass") && x.id)
     EXTRA_TIME = (x = Special.find_by_identifier("extra_time") && x.id)
   end
