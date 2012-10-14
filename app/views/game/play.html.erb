@@ -6,7 +6,7 @@
       message: '#message-container',
       options_container: '#options',
       countdown_container: '#countdown',
-      timer: 15,
+      timer: 10,
       sequence: 20
     });
     game.ask();
@@ -50,7 +50,7 @@
       <span id="countdown"></span>seconds
     </div>
     <div id="specials" class="powerup">
-      <a id="cut" href="#" style="margin-left: 400px;">
+      <a id="cut" href="#">
         <span class="counter"><%= @user.as_json[:specials]['cut'] %></span>
       </a>
       <a id="extra_time" href="#">

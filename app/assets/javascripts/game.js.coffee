@@ -283,7 +283,8 @@ class Game.Countdown
     @elapsed_time = (new Date()) - @timer
 
   update: ->
-    $(@container).parent().removeClass('counter-' + (@counter + 1))
+    $(@container).parent()[0].className = $(@container).parent()[0].className.replace(/\bcounter-.*?\b/g, '')
+    $(@container).parent().removeClass('counter-*')
 
     # Blink when counter gets into 3
     if (@counter == 2)
@@ -395,6 +396,7 @@ class Game.MessageBuilder
       #object.message = object.message.replace(  )
 
     @tpl(object)
+
 class Game.Sequence
   constructor: (data) ->
     @game = data.game
@@ -405,6 +407,7 @@ class Game.Sequence
 
     # Accumulate all user successes
     @success = 0
+    this.update_ui()
 
   next: (success) ->
     if success

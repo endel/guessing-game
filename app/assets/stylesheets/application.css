@@ -220,7 +220,6 @@ span#combo {
   width: 180px;
 }
 
-
 .game-right.counter-8 { background-position: -3px -140px  }
 .game-right.counter-7 { background-position: -3px -278px  }
 .game-right.counter-6 { background-position: -3px -416px  }
@@ -247,14 +246,21 @@ span#combo {
 .message.timeout {background-color: #ba9e30;}
 .message.end {background-color: #2e2e2e;}
 
-
 .powerup {
-    width: 100%;
-    padding-bottom: 10px;
-    margin-top: -30px;
-    float: left;
-    font-size: 11px;
-    text-align: center;
+width: 400px;
+padding-bottom: 21px!important;
+margin-top: -49px;
+float: left;
+margin-bottom: 0px!important;
+margin: -40px 0px 0px 296px!important;
+font-size: 11px;
+text-align: center;
+}
+
+#sequence{
+float: left;
+font-size: 30px;
+padding: 30px 0px 0px 24px;
 }
 
 .powerup a {
