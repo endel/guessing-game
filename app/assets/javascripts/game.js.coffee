@@ -115,8 +115,6 @@ class window.Game
       # Check selected answer
       if (@options.check( $(target).data('id') ))
         success = true
-        # Play "answer correct"
-        sounds.play('answer_correct')
         message_type = 'success'
         $(target).addClass('success')
       else
@@ -409,7 +407,15 @@ class Game.Sequence
     @success = 0
 
   next: (success) ->
-    @success += 1 if success
+    if success
+      @success += 1
+
+      # Play "combo" or "answer correct"
+      if @last_success
+        sounds.play 'combo'
+      else
+        sounds.play 'answer_correct'
+
 
     if @last_success && success
       @combo += 1
