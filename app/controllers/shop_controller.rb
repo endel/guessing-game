@@ -20,9 +20,9 @@ class ShopController < ApplicationController
         puts "Buying=>#{special.name}"
         @user.buy(special, s[1] ||= 0)
       end
-      render :json => { :message => "You bought!" }
+      render :json => { :message => "You bought!", :coins => @user.coins }
     else
-      render :json => { :message => "Inusificient cash!" }
+      render :json => { :message => "Inusificient cash!", :coins => @user.coins }
     end
 
   end

@@ -1,7 +1,7 @@
   <div class="header">
   <div class="true">
     <% if @user.present? %>
-    <div class="top-info"><%= @user.name %> ($ <%= @user.coins %> / <%= @user.score %> points) | Logout</div>
+    <div class="top-info"><%= @user.name %> ($ <span class="coins"><%= @user.coins %></span> / <%= @user.score %> points) | Logout</div>
     <% end %>
     <div class="logo">
       <img src="/assets/logo.png" alt="Guessing Game" title="Guessing Game" />

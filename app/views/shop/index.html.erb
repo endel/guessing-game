@@ -1,5 +1,8 @@
 <%= javascript_tag do %>
   $(function (){
+    
+    $('.buy').prop("disabled", true);
+    
     $(".buy_special").validate({
     	errorPlacement: function(error, element) { return false; },
 
@@ -15,14 +18,16 @@
             success: function (data, success) {
                 alert( data.message );
                 $(".buy_special")[0].reset();
-                $("#total").text("0");
+                $("#total .cart").text("0");
+                $("#total .coins").text(data.coins);
+                $(".header .coins").text(data.coins);
             }
         });
   		
     	}
     });
 
-    $(".update_total").focusout(function(){
+    $(".update_total").change(function(){
       var total = 0;
 
       for(i = 0; i < $(".special-info").length; i++){
@@ -32,6 +37,13 @@
         total = total + (price * qtt);
       }
       
+      if(total > <%= @user.coins.to_i %> && total != 0){
+        $("#total .cart").css("color", "#AB3D39");
+        $('.buy').prop("disabled", true);
+      } else {
+        $("#total .cart").css("color", "#FFF");
+        $('.buy').prop("disabled", false);
+      }
       // Update the total
       $("#total .cart").text(total);
     });
@@ -44,10 +56,10 @@
     $ <span class="cart">0</span> /
     $ <span class="coins"><%= @user.coins %></span>
   </h1>
-  <h2>Buy specials items and get more performance.</h2>
+  <h2>Buy specials items and get more privileges.</h2>
 </div>
 <% images = { 1 => "icon-time-shop.png", 2 => "icon-cut-shop.png", 3 => "icon-next-shop.png" }
-description = { 1 => "Add 10 seconds to your answer time giving you more score.", 2 => "Eliminate 2 errors answers and maximize your successful chance.", 3 => "Jump to next question, getting the score as correct answer." }
+description = { 1 => "Add 10 seconds to your answer time giving you more score.", 2 => "Eliminate 2 incorrect answers and maximize your successful chance.", 3 => "Jump to next question, getting the score as correct question." }
 %>
 <%= simple_form_for "available_specials", :html => { :class => "buy_special" } do |f| %>
   <% @specials.each do |special| %>
