@@ -26,6 +26,11 @@ Matter.destroy_all
 
 user = User.first
 
+cars_categories = Category.create([
+    { :name => '1910-1950 (decades)' },
+    { :name => '1960-1980 (decades)' },
+    { :name => '1990-today (decades)' }
+])
 
 cachorros = Category.create(:name => "Cachorros")
 cachorros.pictures.create([
@@ -62,7 +67,61 @@ user.user_specials.create([
 
 matters = Matter.create([
   {:name => "Cachorros", :categories => "1"},
-  {:name => "Carros", :categories => "2,3,4,5"},
+  {:name => "Cars", :categories => cars_categories.collect {|x| x.id }.to_s.gsub("[","").gsub("]", "").gsub(" ", "")},
+])
+
+
+
+Picture.create([
+  { :category_id => cars_categories[0].id, :name => '1917 Ford Model T Woody Wagon', :url => 'http://mafia-team.r12.railsrumble.com/uploads/5e08f9e55a3227a9e01f4f3dd1f782a9da47551c.jpg' },
+  { :name => '1920 Ford Model T', :url => 'http://mafia-team.r12.railsrumble.com/uploads/4329d0d193a1c1522636bd1f75ec0a43e3bf1471.jpg' },
+  { :name => '1928 Ford Model A', :url => 'http://mafia-team.r12.railsrumble.com/uploads/fd817986222574d6e461a14f7a86311ac5eb28de.jpg' },
+  { :name => '1934 Ford LeBaron Sedan', :url => 'http://mafia-team.r12.railsrumble.com/uploads/5202275a85c0a92f912c6024320834adc10d8a56.jpg' },
+  { :name => '1935 Ford Phaeton', :url => 'http://mafia-team.r12.railsrumble.com/uploads/cd7cf86fca23f22d2a32961ace07e4336ce38f7a.jpg' },
+  { :name => '1937 Ford Woody', :url => 'http://mafia-team.r12.railsrumble.com/uploads/5913dc88994c163b579c295e12aa3df35a89a9ec.jpg' },
+  { :name => '1939 Chevrolet Coupe', :url => 'http://mafia-team.r12.railsrumble.com/uploads/a1528ac235c02613899981ee550cf5ea201f08cb.jpg' },
+  { :name => '1941 Chrysler Royal', :url => 'http://mafia-team.r12.railsrumble.com/uploads/0f77d8fdbde13ac629efb2af18e164c296bf63e4.jpg' },
+  { :name => '1946 Ford Sedan', :url => 'http://mafia-team.r12.railsrumble.com/uploads/8399b246ef57d71a4d0b349ed733289e0b0e8d01.jpg' },
+  { :name => '1948 Chevrolet Fleetmaster Sedan', :url => 'http://mafia-team.r12.railsrumble.com/uploads/868ecd6cbebd2669c5421cb208a6a107bbfec43e.jpg' },
+  { :name => '1949 Cadillac', :url => 'http://mafia-team.r12.railsrumble.com/uploads/abd91a2080ab62ca43030640c9badf1da8795f1e.jpg' },
+  { :name => '1949 Ford Maroon', :url => 'http://mafia-team.r12.railsrumble.com/uploads/7307ad8901d1c26c3d378a8740dd2ceac4922288.jpg' },
+  { :name => '1950 Ford Coupe', :url => 'http://mafia-team.r12.railsrumble.com/uploads/c3724913fb3fa25f98a64c7b7aa1e31793761e55.jpg' },
+  { :name => '1951 Chevrolet Hardtop', :url => 'http://mafia-team.r12.railsrumble.com/uploads/3dc712968bc2d80478fdbdb08590ef1257fa2af2.jpg' },
+  { :name => '1951 Chrysler Windsor Sedan', :url => 'http://mafia-team.r12.railsrumble.com/uploads/a3db988b8ebfb7598f9468914b9605b9bd13050c.jpg' },
+  { :name => '1953 Chevrolet Station Wagon', :url => 'http://mafia-team.r12.railsrumble.com/uploads/12857d759f515b681bac5081827a6aec97acf8b2.jpg' },
+  { :name => '1955 Ford Thunderbird', :url => 'http://mafia-team.r12.railsrumble.com/uploads/7bab47aa93b0285c4f315b12dd86fc8ef2f915ad.jpg' },
+  { :name => '1956 Chevrolet Bel Air', :url => 'http://mafia-team.r12.railsrumble.com/uploads/07dd1d0d92277b08457310b28d99c09cbd7795d3.jpg' },
+  { :name => '1956 Chevrolet Corvette', :url => 'http://mafia-team.r12.railsrumble.com/uploads/92e9e2f4b21303fcafa291c3fa625cda2979517f.jpg' },
+  { :name => '1956 Ford Fairlane Sunliner', :url => 'http://mafia-team.r12.railsrumble.com/uploads/e8210d967a9c6df157150683bb79ba9c7c9330f6.jpg' },
+  { :name => '1957 Ford Thunderbird', :url => 'http://mafia-team.r12.railsrumble.com/uploads/3f50eba79fd90c95116c240a9fb50ab9f77afc23.jpg' },
+  { :name => '1958 Ferrari 250 GT Coupe', :url => 'http://mafia-team.r12.railsrumble.com/uploads/4f7e706eed222b58604aa10b8fe9211edca531e6.jpg' },
+  { :name => '1959 Chevrolet Corvette', :url => 'http://mafia-team.r12.railsrumble.com/uploads/9314dd2ac3407d0deeb2b47d90ecd2cf09071f53.jpg' },
+  { :name => '1959 Ford Galaxie Fairlane 500', :url => 'http://mafia-team.r12.railsrumble.com/uploads/ce3be32efe07c9bd69020a06bbdb6959bb84029a.jpg' },
+  { :name => '1959 Ford Ranchero', :url => 'http://mafia-team.r12.railsrumble.com/uploads/26f05faff2432c7cd15a413fd7d80dfe3156fd81.jpg' },
+  { :name => '1962 Ford Thunderbird', :url => 'http://mafia-team.r12.railsrumble.com/uploads/2b6db4a706d3275b8a544f410488bf4fbee4f07d.jpg' },
+  { :name => '1964 Ford Thunderbird', :url => 'http://mafia-team.r12.railsrumble.com/uploads/8824443184a52969208099d0075e39ff558a2135.jpg' },
+  { :name => '1965 Chevrolet Corvair', :url => 'http://mafia-team.r12.railsrumble.com/uploads/1601a45eb839e7a0249f4a39a65416323880d066.jpg' },
+  { :name => '1966 Chevrolet El Camino', :url => 'http://mafia-team.r12.railsrumble.com/uploads/29d3e5d0a64533eb815c47d25fd0bf524d0004f4.jpg' },
+  { :name => '1966 Chevrolet Impala Hardtop', :url => 'http://mafia-team.r12.railsrumble.com/uploads/6de0524e4591f9a0cfcb6ca68ae8cff887c5c195.jpg' },
+  { :name => '1966 Ford Thunderbird', :url => 'http://mafia-team.r12.railsrumble.com/uploads/1b1eec1ce2bd379b6d04a9c8e6aab85aaa488c15.jpg' },
+  { :name => '1967 Chevrolet Camaro', :url => 'http://mafia-team.r12.railsrumble.com/uploads/414a35bbec96e037de1403be3b1eca6e47832ce0.jpg' },
+  { :name => '1967 Chevrolet Chevelle SS 396 Hardtop', :url => 'http://mafia-team.r12.railsrumble.com/uploads/15e33390b8e866c5594009933bc09dddf16e4eaf.jpg' },
+  { :name => '1967 Chevrolet Corvette', :url => 'http://mafia-team.r12.railsrumble.com/uploads/3b9901acafd180ceb99753cda4eda0ba3e87de76.jpg' },
+  { :name => '1968 Chevrolet Malibu', :url => 'http://mafia-team.r12.railsrumble.com/uploads/510a5c6ed54472a19bd1b81c6ed1fac7001e15d6.jpg' },
+  { :name => '1968 Ford Mustang Fastback', :url => 'http://mafia-team.r12.railsrumble.com/uploads/e9d1a476a1b8bf03e93e44c687325bef547b7244.jpg' },
+  { :name => '1968 Ford Torino', :url => 'http://mafia-team.r12.railsrumble.com/uploads/770c84224af6a9f5ca3a79b435d51203f8230f10.jpg' },
+  { :name => '1970 Chevrolet Corvette', :url => 'http://mafia-team.r12.railsrumble.com/uploads/de02ba2de5fcc57fd2e323626e4eadda899032a4.jpg' },
+  { :name => '1970 Ford Mustang Fastback', :url => 'http://mafia-team.r12.railsrumble.com/uploads/4a2da08551b30cc7ff1e98ae38e520ed1b5e24af.jpg' },
+  { :name => '1971 Chevrolet Camaro', :url => 'http://mafia-team.r12.railsrumble.com/uploads/6b788db8e4e73029a34c6dec28964335addc6970.jpg' },
+  { :name => '1972 Chevrolet Chevelle SS', :url => 'http://mafia-team.r12.railsrumble.com/uploads/ae5f58e7afd5ec26b8ab22de9a9a66ed00191f7c.jpg' },
+  { :name => '1973 Ford Mustang Mach 1', :url => 'http://mafia-team.r12.railsrumble.com/uploads/a6f1926f170f81e579792af86c694491140fc651.jpg' },
+  { :name => '1975 Chevrolet Corvette', :url => 'http://mafia-team.r12.railsrumble.com/uploads/1b247c50bc09d7eab2175f67c3243044b5c56f3d.jpg' },
+  { :name => '1977 Ford Mustang Cobra II', :url => 'http://mafia-team.r12.railsrumble.com/uploads/e45abdd65ea7944c90b0c455ba532da030a0b9bb.jpg' },
+  { :name => '1988 Ferrari Testarossa', :url => 'http://mafia-team.r12.railsrumble.com/uploads/ab06fbee5d47baff9f6f032c2c733211b75478ea.jpg' },
+  { :name => '1990 Ford Mustang', :url => 'http://mafia-team.r12.railsrumble.com/uploads/ae60c1b10cbdca89fdf1491da32aa54e6c8c63a9.jpg' },
+  { :name => '1995 Ferrari 512M', :url => 'http://mafia-team.r12.railsrumble.com/uploads/ff9ffe187165bc8b0811c3090a30a352d69fe4ff.jpg' },
+  { :name => '2001 Ferrari 550 Barchetta Pininfarina', :url => 'http://mafia-team.r12.railsrumble.com/uploads/65c1ffcd030bdec0d125b1c3b07b4111cd8de065.jpg' },
+  { :name => '2001 Ferrari 550 Maranello', :url => 'http://mafia-team.r12.railsrumble.com/uploads/06ced7c0dde5e8f97c1e302efa90fc614d98154a.jpg' }
 ])
 
 Ranking.create([
