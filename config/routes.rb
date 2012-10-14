@@ -8,8 +8,6 @@ Guessingame::Application.routes.draw do
   get "game/play", :as => :game_play
   post "game/answer", :as => :game_answer
 
-
-
   # Rankings routes
   get "rankings" => "rankings#index", :as => :ranking
   get "rankings/weekly", :as => :ranking_weekly
@@ -17,7 +15,7 @@ Guessingame::Application.routes.draw do
 
   # User routes
   get "user/index"
-  get "user/profile"
+  get "user/profile/:id" => "user#profile"
   get "user/search", :as => :search_user
   get "user/(:id)" => "user#show", :as => :user
 
