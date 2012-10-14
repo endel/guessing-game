@@ -614,13 +614,3 @@ h2 span {
           transform: rotateY(180deg);
 }
 
-.alert {
-  position: fixed;
-  padding: 10px;
-  margin: 10px auto;
-  top: 0;
-  left: 40%;
-  border: 1px Solid #999;
-  background: #EEE;
-  border-radius: 10px;
-}

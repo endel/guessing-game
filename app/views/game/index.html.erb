@@ -1,19 +1,37 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
-  $('#start .checkbox').selectable({
+  $('.category-body .checkbox').selectable({
     class: 'selected'
   })
 });
 <% end %>
 
-<div id="start">
-<%= form_tag game_play_path, :method => :get do |f| %>
-  <% @matters.each do |m| %>
-  <span class="checkbox">	  	
-    <%= check_box_tag "matters[]", m.id %>	  	
-    <%= m.name %>
-  </span>
+<div class="true">
+	<div class="category-head">
+		
+		<h1>Select your categories</h1>
+		<h2>Selecting your favorites you choose the types of images that will  appear to you.</h2>
+	</div>
+	<%= form_tag game_play_path, :method => :get do %>
+	<div class="category-body">
+		<% @matters.each do |m| %>
+    <span class="checkbox">	  	
+      <%= check_box_tag "matters[]", m.id %>	  	
+      <%= m.name %>
+    </span>
+    <% end %>
+	</div>
+
+  <div class="category-play">
+  <%= submit_tag "Let's play", :class => 'start' %>
+  </div>
   <% end %>
-<%= submit_tag "Let's play"%>
-<% end %>
+	
+	
 </div>
+
+
+<div id="start">
+
+</div>
+
