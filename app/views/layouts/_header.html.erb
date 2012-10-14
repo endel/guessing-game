@@ -9,10 +9,18 @@
       </a>
     </div>
     <ul>
-      <li><a href="#" <%= "class=active" if params['controller'] == "profile" %>>Profile</a></li>
-      <li><a href="#" <%= "class=active" if params['controller'] == "game" %>>In Game</a></li>
-      <li><a href="#" <%= "class=active" if params['controller'] == "rankings" %>>Ranking</a></li>
-      <li><a href="#" <%= "class=active" if params['controller'] == "shop" %>>Shopping</a></li>
+      <li>
+        <a href="<%= user_profile_path %>" <%= "class=active" if params['controller'] == "profile" %>>Profile</a>
+      </li>
+      <li>
+        <a href="<%= game_play_path %>" <%= "class=active" if params['controller'] == "game" %>>In Game</a>
+      </li>
+      <li>
+        <a href="<%= ranking_summary_path %>" <%= "class=active" if params['controller'] == "rankings" %>>Ranking</a>
+      </li>
+      <li>
+        <a href="<%= shop_path %>" <%= "class=active" if params['controller'] == "shop" %>>Shopping</a>
+      </li>
     </ul>
   </div>
   </div>
