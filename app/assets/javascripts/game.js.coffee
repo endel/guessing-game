@@ -23,6 +23,7 @@ class window.Game
 
     @countdown = new Game.Countdown({
       game: this,
+      timer: data.timer,
       container: data.countdown_container
     })
 
@@ -260,6 +261,7 @@ class Game.Specials.Pass extends Game.Specials.Base
 #
 class Game.Countdown
   constructor: (data) ->
+    @default_timer = data.timer
     @game = data.game
     @container = data.container
     @interval = null
@@ -269,7 +271,7 @@ class Game.Countdown
 
   start: ->
     @paused = false
-    @counter = 15
+    @counter = @default_timer
     @timer = new Date()
     that = this
     this.update()
@@ -286,8 +288,8 @@ class Game.Countdown
     $(@container).parent().removeClass('counter-' + (@counter + 1))
 
     # Blink when counter gets into 3
-    if (@counter == 3)
-      this.animate()
+    if (@counter == 2)
+      this.animate('shake')
 
     if (@counter < 0)
       this.stop()
@@ -303,11 +305,12 @@ class Game.Countdown
       $(@container).html(@counter)
       @counter -= 1
 
-  animate: ->
+  animate: (kind) ->
+    kind = 'bounceIn' unless kind
     that = this
-    $(@container).parent().addClass('animated').addClass('bounceIn')
+    $(@container).parent().addClass('animated').addClass(kind)
     delay 500, ->
-      $(that.container).parent().removeClass('animated').removeClass('bounceIn')
+      $(that.container).parent().removeClass('animated').removeClass(kind)
 
 
 class Game.Transitioner
