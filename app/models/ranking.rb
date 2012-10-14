@@ -1,7 +1,7 @@
 class Ranking < ActiveRecord::Base
   belongs_to :user
   belongs_to :matter
-  attr_accessible :score, :user_id, :matter_id, :week_date
+  attr_accessible :total_score, :user_id, :matter_id, :week_date
 
   # scope :weekly, lambda { find_by_sql("SELECT *, SUM(rankings.score) AS 'total_score' FROM rankings, users
   #                             WHERE users.id = rankings.user_id
@@ -14,7 +14,7 @@ class Ranking < ActiveRecord::Base
   before_save :set_the_week_date
 
   def set_the_week_date
-    self.week_date = Time.now.at_beginning_of_week
+    self.week_date = Time.now.at_beginning_of_week.strftime('%Y-%m-%d')
   end
 
 
@@ -25,7 +25,7 @@ class Ranking < ActiveRecord::Base
                    WHERE users.id = rankings.user_id
                    AND rankings.week_date = '#{date}'
                    GROUP BY rankings.user_id
-                   ORDER BY rankings.score DESC")
+                   ORDER BY rankings.total_score DESC")
     end
 
     def specific_matter_weekly(date, matter)
@@ -34,7 +34,7 @@ class Ranking < ActiveRecord::Base
                    AND rankings.week_date = '#{date}'
                    AND rankings.matter = '#{matter}'
                    GROUP BY rankings.user_id
-                   ORDER BY rankings.score DESC")
+                   ORDER BY rankings.total_score DESC")
     end
 
     def summary(user)
@@ -49,15 +49,15 @@ class Ranking < ActiveRecord::Base
                          WHERE users.id = rankings.user_id
                          AND users.id <> '#{user.first.id}'
                          GROUP BY rankings.user_id
-                         HAVING rankings.score >= #{user.first.score}
-                         ORDER BY rankings.score
+                         HAVING rankings.total_score >= #{user.first.score}
+                         ORDER BY rankings.total_score
                          LIMIT 10")
 
        post = find_by_sql("SELECT * FROM rankings, users
                           WHERE users.id = rankings.user_id
                           GROUP BY rankings.user_id
-                          HAVING rankings.score < #{user.first.score}
-                          ORDER BY rankings.score DESC
+                          HAVING rankings.total_score < #{user.first.score}
+                          ORDER BY rankings.total_score DESC
                           LIMIT 10")
 
         pre.concat(user).concat(post)
