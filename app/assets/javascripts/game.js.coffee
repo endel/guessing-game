@@ -208,7 +208,7 @@ class Game.Specials.Base
 
   # Update User Interface
   update_ui: ->
-    $('#' + this.name + " #score").html( @game.user.special[this.name] )
+    $('#' + this.name + " .counter").html( @game.user.special[this.name] )
     if (@game.user.special[this.name] <= 0)
       $('#' + this.name).addClass('disabled')
 
@@ -239,6 +239,7 @@ class Game.Specials.ExtraTime extends Game.Specials.Base
   use: (game) ->
     sounds.play('extra_time')
     game.countdown.counter += 11
+    game.countdown.animate()
     game.countdown.update()
 
 #
@@ -284,6 +285,10 @@ class Game.Countdown
   update: ->
     $(@container).parent().removeClass('counter-' + (@counter + 1))
 
+    # Blink when counter gets into 3
+    if (@counter == 3)
+      this.animate()
+
     if (@counter < 0)
       this.stop()
 
@@ -297,6 +302,13 @@ class Game.Countdown
       $(@container).parent().addClass('counter-' + @counter)
       $(@container).html(@counter)
       @counter -= 1
+
+  animate: ->
+    that = this
+    $(@container).parent().addClass('animated').addClass('bounceIn')
+    delay 500, ->
+      $(that.container).parent().removeClass('animated').removeClass('bounceIn')
+
 
 class Game.Transitioner
   constructor: (game) ->
