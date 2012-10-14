@@ -136,18 +136,30 @@ table {
     border-radius: 20px 20px 0 0;
 }
 
-.game-left {
-    background: url('/assets/bg-gameleft.png') no-repeat scroll -3px 68px transparent;
-    color: #ffffff;
-    float: left;
-    font-size: 14px;
-    height: 168px;
-    margin-top: 134px;
-    padding-top: 100px;
-    text-align: center;
-    width: 180px;
-    margin-left: 136px;
+.game-left{
+  background: url("/assets/bg-gameleft.png") no-repeat scroll -3px 0px transparent;
+  color: white;
+  position: relative;
+  float: left;
+  font-size: 14px;
+  height: 87px;
+  margin-top: 134px;
+  padding-top: 34px;
+  text-align: center;
+  width: 180px;
+  margin-left: 136px;
 }
+
+div.game-left.combo{background: url("/assets/bg-gameleft.png") no-repeat scroll -3px -141px transparent;}
+span#combo {
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 20px;
+  left: 35px !important;
+}
+
 
 .game-left #score {
     display: block;

@@ -403,17 +403,21 @@ class Game.Sequence
     @total = data.sequence
     @current = 1
     @combo = 0
+    @last_success = false
 
     # Accumulate all user successes
     @success = 0
 
   next: (success) ->
-    if success
+    @success += 1 if success
+
+    if @last_success && success
       @combo += 1
-      @success += 1
     else
       @combo = 0
     @current += 1
+
+    @last_success = success
 
     this.update_ui()
 
