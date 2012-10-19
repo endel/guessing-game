@@ -85,12 +85,18 @@ class window.Game
     # Update score UI
     @scorer.update( parseInt(data.score) )
 
-    # Preload next image
-    # Show options when image is loaded
-    img = new Image()
-    $(img).load ->
-      that.build_answers.call(that, data)
-    img.src = data.answer.url
+    if data.has_next
+      # Preload next image
+      # Show options when image is loaded
+      img = new Image()
+      img.src = data.answer.url
+      $(img).load ->
+        that.build_answers.call(that, data)
+
+    else
+      # End of the game!
+      delay 1000, ->
+        that.show_message({ message_type: 'end' })
 
   # Show message and update score UI
   show_message: (data) ->
@@ -99,6 +105,7 @@ class window.Game
     $(@image_sel).addClass('rotated').addClass('fadeOut')
     message = @message_builder.build(data.message_type, $.extend(data, {
       total_score: @scorer.score
+      success: @sequence.success
     }))
     $(@message_sel).html($(message)).removeClass('fadeOut').addClass('rotated')
 
@@ -390,9 +397,9 @@ class Game.MessageBuilder
     }
   build: (type, replacements) ->
     object = @types[type]
-    #for replacement in replacements
-      #console.log(replacement)
-      #object.message = object.message.replace(  )
+    $.map replacements, (i) ->
+      console.log(this)
+      object.message = object.message.replace(  )
 
     @tpl(object)
 
@@ -400,7 +407,7 @@ class Game.Sequence
   constructor: (data) ->
     @game = data.game
     @total = data.sequence
-    @current = 1
+    @current = 0
     @combo = 0
     @last_success = false
 
@@ -428,7 +435,7 @@ class Game.Sequence
 
     this.update_ui()
 
-    @total == @current
+    @current < @total
 
   update_ui: ->
     # Sequence

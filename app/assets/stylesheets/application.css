@@ -512,6 +512,23 @@ h2 span {
   color: #dddddd;
 }
 
+.ranking{padding-bottom: 50px;}
+.ranking table{width: 100%;}
+.ranking table a{text-decoration: none; color: #bb573c;}
+.ranking table a:hover {text-decoration: underline;}
+.ranking table th{padding: 20px; font-size: 14px; color: #efefef; border-bottom: 2px solid #222222; text-align: center;}
+.ranking table td{padding: 20px; font-size: 13px; color: #dddddd; border-bottom: 1px solid #999999; text-align: center;}
+.ranking table tr.you td{background-color: #52411d  }
+
+.ranking-head h1{font-size: 50px;
+  text-align: center;
+  margin: 0px;
+  padding: 50px 0 0px;}
+
+.ranking-head h2 {
+  text-align: center;
+  padding: 10px 0 40px;
+}
 
 /**
  * CSS3 Animations

@@ -8,11 +8,6 @@ class GameController < ApplicationController
   end
 
   # GET
-  def ranking
-
-  end
-
-  # GET
   def play
     unless params[:matters].present? && params[:matters].length > 0
       flash[:message] = 'category-required'

@@ -1,4 +1,4 @@
-<div id="ranking" class="true">
+<div id="ranking" class="ranking true">
 
 <!-- Hide temporarily, we can't count ranking position with searching -->
 <% if false %>
@@ -7,6 +7,11 @@
     <%= submit_tag "Search", :class => "search" %>
   <% end %>
 <% end %>
+
+<div class="ranking-head">
+  <h1>Our Ranking</h1>
+  <h2>Check out how good your scores compared to scores of other players.</h2>
+</div>
 
 <% if defined?(@ranking) %>
 <table border="0" cellspacing="5" cellpadding="5">
@@ -19,7 +24,7 @@
   </thead>
   <tbody>
     <% @ranking.each_with_index do |user, index| %>
-    <tr>
+    <tr <%= raw 'class="you"' if user.id == @user.id %>>
       <td><%= index + 1 %></td>
       <td><%= link_to user.name, "/user/profile/#{user.id}" %></td>
       <td><%= user.total_score %></td>
