@@ -1,7 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
-
 delay = (ms, func) -> setTimeout func, ms
 interval = (ms, func) -> setInterval func, ms
 
@@ -105,7 +101,8 @@ class window.Game
     $(@image_sel).addClass('rotated').addClass('fadeOut')
     message = @message_builder.build(data.message_type, $.extend(data, {
       total_score: @scorer.score
-      success: @sequence.success
+      success: @sequence.success,
+      sequence_total: @sequence.total
     }))
     $(@message_sel).html($(message)).removeClass('fadeOut').addClass('rotated')
 
@@ -141,7 +138,6 @@ class window.Game
     @countdown.stop()
 
     has_next = @sequence.next(success)
-    console.log(has_next)
     this.show_message({message_type: message_type})
 
     $.post '/game/answer', { time: @countdown.elapsed_time, answer_id: id,  matter_id: @options.answer.matter_id, specials:  @specials.consumed, combo: @sequence.combo }, (data) ->
@@ -375,8 +371,8 @@ class Game.MessageBuilder
       end: {
         type: 'end',
         image_src: '/assets/messages/end.png',
-        title: 'His round ended.',
-        message: 'You got {{total_score}} points, hitting {{success}} of 20 questions.',
+        title: 'Round ended.',
+        message: 'You got {{total_score}} points, hitting {{success}} of {{sequence_total}} questions.',
         link: {
           href: '/rankings/summary',
           title: 'Check out how your ranking.'
@@ -397,9 +393,8 @@ class Game.MessageBuilder
     }
   build: (type, replacements) ->
     object = @types[type]
-    $.map replacements, (i) ->
-      console.log(this)
-      object.message = object.message.replace(  )
+    $.map replacements, (i, field) ->
+      object.message = object.message.replace("{{#{field}}}", replacements[field])
 
     @tpl(object)
 

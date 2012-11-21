@@ -7,7 +7,7 @@
       options_container: '#options',
       countdown_container: '#countdown',
       timer: 15,
-      sequence: 20
+      sequence: 10
     });
     game.ask();
   });
@@ -28,7 +28,7 @@
     <h2>{{title}}</h2>
     <p>{{message}}</p>
     {{#if link}}
-      <a href="{{href}}" title="{{title}}">{{title}}</a>
+      <a href="{{link.href}}" title="{{link.title}}">{{link.title}}</a>
     {{/if}}
   </div>
 </script>
