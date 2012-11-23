@@ -48,7 +48,6 @@ footer, header, hgroup, menu, nav, section {
 }
 
 body {
-  padding-top: 36px;
   line-height: 1;
   font-family: Verdana;
   background-color: #000000;
@@ -93,9 +92,8 @@ table {
 .logo {
 overflow: hidden;
 text-align: center;
-width: 156px;
+/*width: 156px;*/
 margin: 12px 0px 0px 0px;
-float: left;
 }
 
 .top-info {
